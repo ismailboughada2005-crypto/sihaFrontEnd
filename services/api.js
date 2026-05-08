@@ -124,6 +124,50 @@ export const api = {
   stats: {
     getCounts: () => api.get('/stats/counts'),
   },
+
+  // ─── Payments Module ──────────────────────────────────────────────────────
+  invoices: {
+    getAll:        (params = '') => api.get(`/invoices${params}`),
+    getOne:        (id)          => api.get(`/invoices/${id}`),
+    create:        (data)        => api.post('/invoices', data),
+    update:        (id, data)    => api.patch(`/invoices/${id}`, data),
+    delete:        (id)          => api.delete(`/invoices/${id}`),
+    patientHistory:(patientId)   => api.get(`/patients/${patientId}/invoices`),
+  },
+
+  payments: {
+    getAll:  (params = '') => api.get(`/payments${params}`),
+    getOne:  (id)          => api.get(`/payments/${id}`),
+    create:  (data)        => api.post('/payments', data),
+    update:  (id, data)    => api.patch(`/payments/${id}`, data),
+    delete:  (id)          => api.delete(`/payments/${id}`),
+    receipt: (id)          => api.get(`/payments/${id}/receipt`),
+  },
+
+  refunds: {
+    getAll: (params = '') => api.get(`/refunds${params}`),
+    getOne: (id)          => api.get(`/refunds/${id}`),
+    create: (data)        => api.post('/refunds', data),
+    delete: (id)          => api.delete(`/refunds/${id}`),
+  },
+
+  insurance: {
+    companies:     ()     => api.get('/insurance/companies'),
+    createCompany: (data) => api.post('/insurance/companies', data),
+    claims:        ()     => api.get('/insurance-claims'),
+    getClaim:      (id)   => api.get(`/insurance-claims/${id}`),
+    createClaim:   (data) => api.post('/insurance-claims', data),
+    updateClaim:   (id, data) => api.patch(`/insurance-claims/${id}`, data),
+    deleteClaim:   (id)   => api.delete(`/insurance-claims/${id}`),
+  },
+
+  reports: {
+    dashboard:      () => api.get('/reports/dashboard'),
+    monthlyRevenue: (year) => api.get(`/reports/monthly-revenue?year=${year}`),
+    dailyRevenue:   (from, to) => api.get(`/reports/daily-revenue?from=${from}&to=${to}`),
+    paymentMethods: () => api.get('/reports/payment-methods'),
+    topPatients:    () => api.get('/reports/top-patients'),
+  },
 };
 
 export default api;

@@ -44,7 +44,7 @@ const LoginPage = ({ onLogin }) => {
           <div className="w-20 h-20 bg-primary/10 rounded-3xl flex items-center justify-center mx-auto mb-6 text-primary rotate-3 hover:rotate-0 transition-transform">
             <Activity className="w-10 h-10" />
           </div>
-          <h1 className="text-3xl font-black text-slate-900 tracking-tight">Horizon Clinic</h1>
+          <h1 className="text-3xl font-black text-slate-900 tracking-tight uppercase">siha</h1>
           <p className="text-sm font-bold text-slate-400 uppercase tracking-widest mt-2">Unified Access Portal</p>
         </div>
 
@@ -66,7 +66,7 @@ const LoginPage = ({ onLogin }) => {
               <input 
                 required
                 type="email"
-                placeholder="name@horizonclinic.com"
+                placeholder="name@siha.com"
                 className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 pl-14 pr-5 text-sm font-bold outline-none focus:ring-2 focus:ring-primary/20 transition-all"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}

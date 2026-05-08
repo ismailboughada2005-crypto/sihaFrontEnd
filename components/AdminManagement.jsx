@@ -243,7 +243,7 @@ const AdminManagement = ({ admins, setAdmins }) => {
                     <input 
                       required 
                       type="email" 
-                      placeholder="admin@horizon.com"
+                      placeholder="admin@siha.com"
                       className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 pl-14 pr-5 text-sm font-bold outline-none focus:ring-2 focus:ring-primary/20 transition-all"
                       value={formData.email} 
                       onChange={(e) => setFormData({...formData, email: e.target.value})} 

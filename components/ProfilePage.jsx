@@ -7,7 +7,6 @@ import {
   Mail, 
   Phone, 
   MapPin, 
-  Camera, 
   Shield, 
   Bell, 
   Lock, 
@@ -39,19 +38,12 @@ const ProfilePage = ({ userProfile, setUserProfile }) => {
           <div className="bg-white rounded-[2.5rem] p-8 border border-slate-100 shadow-sm text-center relative overflow-hidden">
             <div className="absolute top-0 left-0 w-full h-32 bg-slate-900" />
             <div className="relative pt-12 pb-6">
-              <div className="relative inline-block group mb-6">
+              <div className="relative inline-block mb-6">
                 <div className="h-32 w-32 bg-white rounded-full p-1 shadow-2xl relative z-10">
                   <div className="h-full w-full bg-slate-100 rounded-full flex items-center justify-center text-3xl font-black text-slate-300 ring-4 ring-white overflow-hidden">
-                    {userProfile.avatar ? (
-                      <img src={userProfile.avatar} alt={userProfile.name} className="h-full w-full object-cover" />
-                    ) : (
-                      userProfile.name.split(' ').map(n => n[0]).join('')
-                    )}
+                    {userProfile.name.split(' ').map(n => n[0]).join('')}
                   </div>
                 </div>
-                <button className="absolute bottom-1 right-1 p-2.5 bg-primary text-white rounded-full shadow-lg border-4 border-white hover:scale-110 transition-transform active:scale-95 z-20">
-                  <Camera className="w-4 h-4" />
-                </button>
               </div>
               <h3 className="text-2xl font-black text-on-surface">{userProfile.name}</h3>
               <p className="text-xs font-black text-primary uppercase tracking-[0.2em] mt-1">{userProfile.role}</p>

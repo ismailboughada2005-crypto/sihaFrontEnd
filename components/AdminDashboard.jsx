@@ -88,7 +88,7 @@ const AdminDashboard = ({ patients, doctors, staff, appointments, setPatients, o
         <div className="xl:col-span-8 bg-card-bg p-8 rounded-[2.5rem] border border-card-border shadow-sm transition-all duration-500">
           <div className="flex justify-between items-center mb-10 px-2">
             <div>
-              <h3 className="text-xl font-black text-on-surface tracking-tight">Clinic-wide Admissions</h3>
+              <h3 className="text-xl font-black text-on-surface tracking-tight">siha Admissions</h3>
               <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">Global monitoring</p>
             </div>
             <div className="flex items-center gap-4">

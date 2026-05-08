@@ -72,7 +72,6 @@ export default function DashboardLayout({ children }) {
         userProfile={{ 
           name: currentUser?.name || 'User', 
           role: currentUser?.role || 'staff',
-          avatar: 'https://images.unsplash.com/photo-1559839734-2b71f1536780?auto=format&fit=crop&q=80&w=150' 
         }} 
         onTabChange={(tab) => router.push(`/${tab === 'admin' ? '' : tab}`)} 
       />

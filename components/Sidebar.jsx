@@ -8,12 +8,11 @@ import {
   Calendar, 
   Users, 
   LineChart, 
-  Settings,
-  Plus,
-  LogOut,
-  User,
-  ShieldCheck,
-  CreditCard
+  Settings, 
+  LogOut, 
+  User, 
+  ShieldCheck, 
+  CreditCard 
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -46,15 +45,14 @@ const Sidebar = ({ activeTab, onTabChange, patientCount, doctorCount, staffCount
   ];
 
   const mainItems = [
-    { id: 'patients', label: 'Patients', icon: Users, roles: ['admin', 'doctor', 'staff'] },
+    { id: 'patients', label: 'Patients', icon: Users, roles: ['admin', 'staff'] },
     { id: 'doctors', label: 'Doctors', icon: Stethoscope, roles: ['admin'] },
     { id: 'staff-management', label: 'Staff', icon: Users, roles: ['admin'] },
     { id: 'admins', label: 'Admins', icon: ShieldCheck, roles: ['admin'] },
     { id: 'payments', label: 'Payments', icon: CreditCard, roles: ['admin', 'staff'] },
-    { id: 'appointments', label: 'Appointments', icon: Calendar, roles: ['admin', 'doctor', 'staff'] },
+    { id: 'appointments', label: 'Appointments', icon: Calendar, roles: ['admin', 'staff'] },
     { id: 'analytics', label: 'Analytics', icon: LineChart, roles: ['admin'] },
     { id: 'settings', label: 'Settings', icon: Settings, roles: ['admin', 'doctor', 'staff'] },
-    { id: 'profile', label: 'Profile', icon: User, roles: ['admin', 'doctor', 'staff'] },
   ];
 
   return (
@@ -74,12 +72,7 @@ const Sidebar = ({ activeTab, onTabChange, patientCount, doctorCount, staffCount
           ))}
         </nav>
 
-        <div className="mt-8 pt-8 border-t border-card-border">
-          <button className="w-full bg-slate-900 text-white rounded-2xl py-4 flex items-center justify-center gap-3 hover:bg-slate-800 transition-all shadow-lg active:scale-[0.98] group font-bold">
-             <Plus className="w-5 h-5 group-hover:rotate-90 transition-transform duration-300" />
-             New Case
-           </button>
-        </div>
+
       </div>
 
       <div className="p-8 border-t border-card-border">

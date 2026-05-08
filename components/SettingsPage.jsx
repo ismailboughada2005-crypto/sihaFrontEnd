@@ -132,7 +132,7 @@ const SettingsPage = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <h3 className="text-lg font-black text-on-surface">Appearance</h3>
-                  <p className="text-xs font-bold text-slate-400">Customize how Horizon looks on your screen</p>
+                  <p className="text-xs font-bold text-slate-400">Customize how siha looks on your screen</p>
                 </div>
                 <button 
                   onClick={() => {

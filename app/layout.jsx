@@ -7,7 +7,7 @@ const inter = Inter({
 });
 
 export const metadata = {
-  title: 'Horizon Clinic',
+  title: 'siha Clinic',
   description: 'Management Portal',
 };
 

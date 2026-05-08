@@ -68,3 +68,17 @@
   background: #1e293b;
   border-radius: 4px;
 }
+
+/* ── Receipt Print Styles ─────────────────────────────── */
+@media print {
+  body > * { display: none !important; }
+  #receipt { display: block !important; }
+  #receipt {
+    font-family: Georgia, serif;
+    padding: 32px;
+    max-width: 480px;
+    margin: 0 auto;
+    color: #000;
+  }
+}
+
