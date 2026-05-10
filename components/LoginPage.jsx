@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Lock, LogIn, ShieldCheck, Activity, UserCog, Stethoscope } from 'lucide-react';
 import api from '../services/api';
+import Cookies from 'js-cookie';
 
 const LoginPage = ({ onLogin }) => {
   const [email, setEmail] = useState('');
@@ -20,8 +21,13 @@ const LoginPage = ({ onLogin }) => {
       const response = await api.login({ email, password });
       const { access_token, user } = response;
       
+      // Store in localStorage for client-side API calls
       localStorage.setItem('auth_token', access_token);
       localStorage.setItem('user_role', user.role);
+
+      // Store in Cookies for Middleware (Server-side)
+      Cookies.set('auth_token', access_token, { expires: 7 }); // Expires in 7 days
+      Cookies.set('user_role', user.role, { expires: 7 });
       
       onLogin(user);
     } catch (err) {

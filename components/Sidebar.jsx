@@ -51,6 +51,7 @@ const Sidebar = ({ activeTab, onTabChange, patientCount, doctorCount, staffCount
     { id: 'admins', label: 'Admins', icon: ShieldCheck, roles: ['admin'] },
     { id: 'payments', label: 'Payments', icon: CreditCard, roles: ['admin', 'staff'] },
     { id: 'appointments', label: 'Appointments', icon: Calendar, roles: ['admin', 'staff'] },
+    { id: 'doctor-appointments', label: 'My Appointments', icon: Calendar, roles: ['doctor'] },
     { id: 'analytics', label: 'Analytics', icon: LineChart, roles: ['admin'] },
     { id: 'settings', label: 'Settings', icon: Settings, roles: ['admin', 'doctor', 'staff'] },
   ];

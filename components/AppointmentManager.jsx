@@ -29,27 +29,37 @@ const AppointmentManager = ({ appointments, setAppointments, patients, doctors }
   const [error, setError] = useState(null);
   
   const [formData, setFormData] = useState({
-    patientId: '',
-    doctorId: '',
-    date: '',
-    time: '',
+    patient_id: '',
+    doctor_id: '',
+    appointment_date: '',
+    appointment_time: '',
     type: 'Consultation',
-    status: 'Scheduled'
+    status: 'pending',
+    notes: ''
   });
 
   const handleOpenModal = (appointment = null) => {
     if (appointment) {
       setEditingAppointment(appointment);
-      setFormData({ ...appointment });
+      setFormData({ 
+        patient_id: appointment.patient_id,
+        doctor_id: appointment.doctor_id,
+        appointment_date: appointment.appointment_date,
+        appointment_time: appointment.appointment_time,
+        type: appointment.type,
+        status: appointment.status,
+        notes: appointment.notes || ''
+      });
     } else {
       setEditingAppointment(null);
       setFormData({
-        patientId: patients[0]?.id || '',
-        doctorId: doctors[0]?.id || '',
-        date: new Date().toISOString().split('T')[0],
-        time: '09:00',
+        patient_id: patients[0]?.id || '',
+        doctor_id: doctors[0]?.id || '',
+        appointment_date: new Date().toISOString().split('T')[0],
+        appointment_time: '09:00',
         type: 'Consultation',
-        status: 'Scheduled'
+        status: 'pending',
+        notes: ''
       });
     }
     setIsModalOpen(true);
@@ -105,8 +115,8 @@ const AppointmentManager = ({ appointments, setAppointments, patients, doctors }
   const getDoctorName = (id) => doctors.find(d => String(d.id) === String(id))?.nom || 'Unknown Doctor';
 
   const filteredAppointments = appointments.filter(a => 
-    getPatientName(a.patientId).toLowerCase().includes(searchTerm.toLowerCase()) ||
-    getDoctorName(a.doctorId).toLowerCase().includes(searchTerm.toLowerCase())
+    getPatientName(a.patient_id).toLowerCase().includes(searchTerm.toLowerCase()) ||
+    getDoctorName(a.doctor_id).toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -162,13 +172,13 @@ const AppointmentManager = ({ appointments, setAppointments, patients, doctors }
               >
                 <div className="flex items-center gap-6 w-full md:w-auto">
                   <div className="flex flex-col items-center justify-center h-16 w-16 bg-slate-50 rounded-2xl group-hover:bg-primary/5 transition-colors">
-                    <span className="text-[10px] font-black text-slate-400 uppercase group-hover:text-primary/50">{app.date.split('-')[1]}/{app.date.split('-')[2]}</span>
-                    <span className="text-lg font-black text-on-surface group-hover:text-primary transition-colors">{app.time}</span>
+                    <span className="text-[10px] font-black text-slate-400 uppercase group-hover:text-primary/50">{app.appointment_date.split('-')[1]}/{app.appointment_date.split('-')[2]}</span>
+                    <span className="text-lg font-black text-on-surface group-hover:text-primary transition-colors">{app.appointment_time}</span>
                   </div>
                   <div>
-                    <h4 className="text-base font-black text-on-surface group-hover:text-primary transition-colors">{getPatientName(app.patientId)}</h4>
+                    <h4 className="text-base font-black text-on-surface group-hover:text-primary transition-colors">{getPatientName(app.patient_id)}</h4>
                     <p className="text-xs font-bold text-slate-400 flex items-center gap-2 mt-1">
-                      <Stethoscope className="w-3.5 h-3.5 text-primary" /> {getDoctorName(app.doctorId)} • {app.type}
+                      <Stethoscope className="w-3.5 h-3.5 text-primary" /> {getDoctorName(app.doctor_id)} • {app.type}
                     </p>
                   </div>
                 </div>
@@ -270,8 +280,8 @@ const AppointmentManager = ({ appointments, setAppointments, patients, doctors }
                   <select 
                     required
                     className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 px-5 text-sm font-bold outline-none appearance-none"
-                    value={formData.patientId}
-                    onChange={(e) => setFormData({...formData, patientId: e.target.value})}
+                    value={formData.patient_id}
+                    onChange={(e) => setFormData({...formData, patient_id: e.target.value})}
                   >
                     {patients.map(p => <option key={p.id} value={p.id}>{(p.prenom || '') + ' ' + (p.nom || '')} ({p.id})</option>)}
                   </select>
@@ -282,8 +292,8 @@ const AppointmentManager = ({ appointments, setAppointments, patients, doctors }
                   <select 
                     required
                     className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 px-5 text-sm font-bold outline-none appearance-none"
-                    value={formData.doctorId}
-                    onChange={(e) => setFormData({...formData, doctorId: e.target.value})}
+                    value={formData.doctor_id}
+                    onChange={(e) => setFormData({...formData, doctor_id: e.target.value})}
                   >
                     {doctors.map(d => <option key={d.id} value={d.id}>{d.nom}</option>)}
                   </select>
@@ -295,8 +305,8 @@ const AppointmentManager = ({ appointments, setAppointments, patients, doctors }
                     <input 
                       required type="date" 
                       className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 px-5 text-sm font-bold outline-none"
-                      value={formData.date}
-                      onChange={(e) => setFormData({...formData, date: e.target.value})}
+                      value={formData.appointment_date}
+                      onChange={(e) => setFormData({...formData, appointment_date: e.target.value})}
                     />
                   </div>
                   <div className="space-y-2">
@@ -304,8 +314,8 @@ const AppointmentManager = ({ appointments, setAppointments, patients, doctors }
                     <input 
                       required type="time" 
                       className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 px-5 text-sm font-bold outline-none"
-                      value={formData.time}
-                      onChange={(e) => setFormData({...formData, time: e.target.value})}
+                      value={formData.appointment_time}
+                      onChange={(e) => setFormData({...formData, appointment_time: e.target.value})}
                     />
                   </div>
                 </div>
@@ -324,12 +334,22 @@ const AppointmentManager = ({ appointments, setAppointments, patients, doctors }
                   <div className="space-y-2">
                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Booking Status</label>
                     <select className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 px-5 text-sm font-bold outline-none appearance-none" value={formData.status} onChange={(e) => setFormData({...formData, status: e.target.value})}>
-                      <option>Scheduled</option>
-                      <option>Confirmed</option>
-                      <option>Completed</option>
-                      <option>Cancelled</option>
+                      <option value="pending">Pending</option>
+                      <option value="confirmed">Confirmed</option>
+                      <option value="completed">Completed</option>
+                      <option value="cancelled">Cancelled</option>
                     </select>
                   </div>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Notes</label>
+                  <textarea 
+                    className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 px-5 text-sm font-bold outline-none min-h-[80px]"
+                    placeholder="Add any notes..."
+                    value={formData.notes}
+                    onChange={(e) => setFormData({...formData, notes: e.target.value})}
+                  />
                 </div>
 
                 <div className="pt-8 flex gap-4">
@@ -372,7 +392,7 @@ const AppointmentManager = ({ appointments, setAppointments, patients, doctors }
                 </div>
                 <h3 className="text-2xl font-black text-on-surface tracking-tight mb-2">Cancel Appointment?</h3>
                 <p className="text-sm font-medium text-slate-500 leading-relaxed">
-                  Are you sure you want to cancel the appointment for <span className="font-black text-on-surface">{getPatientName(appointmentToDelete?.patientId)}</span>?
+                  Are you sure you want to cancel the appointment for <span className="font-black text-on-surface">{getPatientName(appointmentToDelete?.patient_id)}</span>?
                 </p>
                 
                 <div className="mt-10 flex gap-4">

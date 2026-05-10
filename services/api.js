@@ -1,3 +1,5 @@
+import Cookies from 'js-cookie';
+
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
 
 const headers = {
@@ -116,6 +118,8 @@ export const api = {
     } finally {
       localStorage.removeItem('auth_token');
       localStorage.removeItem('user_role');
+      Cookies.remove('auth_token');
+      Cookies.remove('user_role');
     }
   },
   getUser: () => api.get('/user'),
@@ -144,29 +148,23 @@ export const api = {
     receipt: (id)          => api.get(`/payments/${id}/receipt`),
   },
 
-  refunds: {
-    getAll: (params = '') => api.get(`/refunds${params}`),
-    getOne: (id)          => api.get(`/refunds/${id}`),
-    create: (data)        => api.post('/refunds', data),
-    delete: (id)          => api.delete(`/refunds/${id}`),
-  },
-
-  insurance: {
-    companies:     ()     => api.get('/insurance/companies'),
-    createCompany: (data) => api.post('/insurance/companies', data),
-    claims:        ()     => api.get('/insurance-claims'),
-    getClaim:      (id)   => api.get(`/insurance-claims/${id}`),
-    createClaim:   (data) => api.post('/insurance-claims', data),
-    updateClaim:   (id, data) => api.patch(`/insurance-claims/${id}`, data),
-    deleteClaim:   (id)   => api.delete(`/insurance-claims/${id}`),
-  },
-
   reports: {
     dashboard:      () => api.get('/reports/dashboard'),
     monthlyRevenue: (year) => api.get(`/reports/monthly-revenue?year=${year}`),
     dailyRevenue:   (from, to) => api.get(`/reports/daily-revenue?from=${from}&to=${to}`),
     paymentMethods: () => api.get('/reports/payment-methods'),
     topPatients:    () => api.get('/reports/top-patients'),
+  },
+
+  // Doctor Appointments
+  doctorAppointments: {
+    getAll: (params = {}) => {
+      const query = new URLSearchParams(params).toString();
+      return api.get(`/doctor/appointments?${query}`);
+    },
+    confirm: (id) => api.patch(`/doctor/appointments/${id}/confirm`),
+    cancel: (id, reason) => api.patch(`/doctor/appointments/${id}/cancel`, { cancellation_reason: reason }),
+    complete: (id, notes) => api.patch(`/doctor/appointments/${id}/complete`, { notes }),
   },
 };
 

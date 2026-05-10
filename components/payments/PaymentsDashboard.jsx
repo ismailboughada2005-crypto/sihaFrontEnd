@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import { Calendar, CalendarCheck, DollarSign, Clock, RotateCcw } from 'lucide-react';
 import api from '../../services/api';
 
 const StatCard = ({ label, value, sub, color, icon }) => (
@@ -112,7 +113,7 @@ export default function PaymentsDashboard() {
             stats?.daily_revenue || 0
           ).toLocaleString()} MAD`}
           color="#10b981"
-          icon="📅"
+          icon={<Calendar className="w-8 h-8" />}
         />
 
         <StatCard
@@ -121,7 +122,7 @@ export default function PaymentsDashboard() {
             stats?.monthly_revenue || 0
           ).toLocaleString()} MAD`}
           color="#6366f1"
-          icon="📆"
+          icon={<CalendarCheck className="w-8 h-8" />}
         />
 
         <StatCard
@@ -130,7 +131,7 @@ export default function PaymentsDashboard() {
             stats?.total_revenue || 0
           ).toLocaleString()} MAD`}
           color="#3b82f6"
-          icon="💰"
+          icon={<DollarSign className="w-8 h-8" />}
         />
 
         <StatCard
@@ -140,16 +141,7 @@ export default function PaymentsDashboard() {
             stats?.pending_amount || 0
           ).toLocaleString()} MAD pending`}
           color="#f59e0b"
-          icon="⏳"
-        />
-
-        <StatCard
-          label="Total Refunded"
-          value={`${Number(
-            stats?.total_refunded || 0
-          ).toLocaleString()} MAD`}
-          color="#ef4444"
-          icon="↩️"
+          icon={<Clock className="w-8 h-8" />}
         />
       </div>
 

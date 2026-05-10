@@ -22,8 +22,7 @@ const Navbar = ({ userProfile, onTabChange }) => {
       </div>
 
       <div className="flex items-center gap-4">
-        <Link 
-          href="/profile"
+        <div 
           className="flex items-center gap-3 hover:bg-item-hover p-2 rounded-2xl transition-all border border-transparent hover:border-card-border group"
         >
           <div className="text-right hidden sm:block px-4 border-l border-card-border">
@@ -33,7 +32,7 @@ const Navbar = ({ userProfile, onTabChange }) => {
           <div className="h-10 w-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary font-black text-xs ring-2 ring-card-border group-hover:ring-primary/20 transition-all">
             {userProfile.name.split(' ').map(n => n[0]).join('')}
           </div>
-        </Link>
+        </div>
       </div>
     </header>
   );

@@ -7,14 +7,12 @@ const STATUS_COLORS = {
   unpaid: 'bg-red-100 text-red-600',
   partially_paid: 'bg-yellow-100 text-yellow-600',
   paid: 'bg-green-100 text-green-600',
-  refunded: 'bg-purple-100 text-purple-600',
 };
 
 const STATUS_LABELS = {
   unpaid: 'Unpaid',
   partially_paid: 'Partial',
   paid: 'Paid',
-  refunded: 'Refunded',
 };
 
 const Badge = ({ status }) => (
@@ -126,7 +124,7 @@ function CreateInvoiceModal({ patients, onClose, onCreated }) {
     'mb-1 block text-xs font-semibold text-slate-700';
 
   return (
-    <Modal title="🧾 Create New Invoice" onClose={onClose}>
+    <Modal title="Create New Invoice" onClose={onClose}>
       <form onSubmit={handleSubmit}>
         <div className="mb-5 grid grid-cols-1 gap-4 md:grid-cols-2">
           <div>
@@ -358,7 +356,7 @@ function RecordPaymentModal({ invoice, onClose, onSaved }) {
 
   return (
     <Modal
-      title={`💳 Record Payment — ${invoice.invoice_number}`}
+      title={`Record Payment — ${invoice.invoice_number}`}
       onClose={onClose}
     >
       <div className="mb-5 rounded-xl bg-green-50 p-4 text-sm">
@@ -542,7 +540,7 @@ export default function InvoiceList() {
       {/* Toolbar */}
       <div className="mb-5 flex flex-wrap items-center gap-3">
         <input
-          placeholder="🔍 Search invoices..."
+          placeholder="Search invoices..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="min-w-[220px] flex-1 rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none focus:border-indigo-500"
@@ -561,7 +559,6 @@ export default function InvoiceList() {
             Partially Paid
           </option>
           <option value="paid">Paid</option>
-          <option value="refunded">Refunded</option>
         </select>
 
         <button
@@ -655,8 +652,7 @@ export default function InvoiceList() {
 
                     <td className="px-4 py-3">
                       <div className="flex gap-2">
-                        {inv.status !== 'paid' &&
-                          inv.status !== 'refunded' && (
+                        {inv.status !== 'paid' && (
                             <button
                               onClick={() =>
                                 setPayInvoice(inv)
@@ -665,7 +661,7 @@ export default function InvoiceList() {
                                 'green'
                               )}`}
                             >
-                              💳 Pay
+                              Pay
                             </button>
                           )}
 

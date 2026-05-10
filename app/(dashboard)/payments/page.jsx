@@ -1,63 +1,90 @@
 'use client';
+
 import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  LayoutDashboard, 
+  FileText, 
+  CreditCard, 
+  Undo2, 
+  ShieldCheck 
+} from 'lucide-react';
+
 import PaymentsDashboard from '../../../components/payments/PaymentsDashboard';
 import InvoiceList from '../../../components/payments/InvoiceList';
-import PaymentList from '../../../components/payments/PaymentList';
-import RefundList from '../../../components/payments/RefundList';
-import InsuranceList from '../../../components/payments/InsuranceList';
+import PaymentList from '../../../components/payments/PaymentList';;
 
 const TABS = [
-  { id: 'dashboard', label: 'Dashboard' },
-  { id: 'invoices',  label: 'Invoices'  },
-  { id: 'payments',  label: 'Payments'  },
-  { id: 'refunds',   label: 'Refunds'   },
-  { id: 'insurance', label: 'Insurance' },
+  { id: 'overview', label: 'Overview', icon: LayoutDashboard },
+  { id: 'invoices', label: 'Invoices', icon: FileText },
+  { id: 'payments', label: 'Payments', icon: CreditCard },
 ];
 
 export default function PaymentsPage() {
-  const [activeTab, setActiveTab] = useState('dashboard');
+  const [activeTab, setActiveTab] = useState('overview');
+
+  const renderContent = () => {
+    switch (activeTab) {
+      case 'overview': return <PaymentsDashboard />;
+      case 'invoices': return <InvoiceList />;
+      case 'payments': return <PaymentList />;
+      case 'insurance': return <InsuranceList />;
+      case 'refunds': return <RefundList />;
+      default: return <PaymentsDashboard />;
+    }
+  };
 
   return (
-    <div style={{ padding: '24px', minHeight: '100vh', background: '#f1f5f9' }}>
-      {/* Header */}
-      <div style={{ marginBottom: '24px' }}>
-        <h1 style={{ fontSize: '28px', fontWeight: '700', color: '#0f172a', margin: 0 }}>
-          Payments Module
-        </h1>
-        <p style={{ color: '#64748b', marginTop: '4px', fontSize: '14px' }}>
-          Manage invoices, payments, refunds, and insurance claims
-        </p>
+    <div className="p-8 space-y-8 animate-in fade-in duration-700">
+      <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 pb-8">
+        <div>
+          <h2 className="text-3xl font-black text-slate-900 tracking-tight mb-1">Financial Module</h2>
+          <p className="text-sm font-medium text-slate-500 uppercase tracking-widest text-[10px]">Revenue & Billing Control Center</p>
+        </div>
+      </header>
+
+      {/* Tabs Navigation */}
+      <div className="flex bg-slate-100/50 p-1 rounded-2xl w-fit border border-slate-200/50">
+        {TABS.map((tab) => {
+          const Icon = tab.icon;
+          const isActive = activeTab === tab.id;
+          return (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`flex items-center gap-2 px-6 py-3 rounded-xl text-xs font-bold transition-all duration-300 ${
+                isActive 
+                ? 'bg-white text-indigo-600 shadow-sm border border-slate-100' 
+                : 'text-slate-500 hover:text-slate-700'
+              }`}
+            >
+              <Icon className={`w-4 h-4 ${isActive ? 'text-indigo-600' : 'text-slate-400'}`} />
+              {tab.label}
+              {isActive && (
+                <motion.div 
+                  layoutId="activeTab" 
+                  className="absolute bottom-0 left-0 right-0 h-0.5 bg-indigo-600 rounded-full" 
+                />
+              )}
+            </button>
+          );
+        })}
       </div>
 
-      {/* Tab Bar */}
-      <div style={{
-        display: 'flex', gap: '4px', background: '#fff',
-        borderRadius: '12px', padding: '4px', marginBottom: '24px',
-        boxShadow: '0 1px 3px rgba(0,0,0,0.1)', width: 'fit-content'
-      }}>
-        {TABS.map(tab => (
-          <button
-            key={tab.id}
-            onClick={() => setActiveTab(tab.id)}
-            style={{
-              padding: '8px 20px', borderRadius: '8px', border: 'none',
-              cursor: 'pointer', fontSize: '14px', fontWeight: '500',
-              transition: 'all 0.2s',
-              background: activeTab === tab.id ? '#6366f1' : 'transparent',
-              color: activeTab === tab.id ? '#fff' : '#64748b',
-            }}
+      {/* Content Area */}
+      <div className="min-h-[600px] transition-all duration-500">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeTab}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
           >
-            {tab.label}
-          </button>
-        ))}
+            {renderContent()}
+          </motion.div>
+        </AnimatePresence>
       </div>
-
-      {/* Tab Content */}
-      {activeTab === 'dashboard' && <PaymentsDashboard />}
-      {activeTab === 'invoices'  && <InvoiceList />}
-      {activeTab === 'payments'  && <PaymentList />}
-      {activeTab === 'refunds'   && <RefundList />}
-      {activeTab === 'insurance' && <InsuranceList />}
     </div>
   );
 }

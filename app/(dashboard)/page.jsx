@@ -48,7 +48,7 @@ export default function HomePage() {
     case 'admin':
       return <AdminDashboard patients={data.patients} doctors={data.doctors} staff={data.staff} appointments={data.appointments} onTabChange={(tab) => router.push(`/${tab}`)} />;
     case 'doctor':
-      return <DoctorDashboard patients={data.patients} />;
+      return <DoctorDashboard />;
     case 'staff':
       return <StaffDashboard patients={data.patients} />;
     default:

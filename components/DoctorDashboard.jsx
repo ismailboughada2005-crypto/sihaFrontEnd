@@ -17,14 +17,36 @@ import {
   ClipboardList
 } from 'lucide-react';
 import KPICard from './KPICard';
+import api from '../services/api';
 
-const DoctorDashboard = ({ patients }) => {
-  const schedule = (patients || []).slice(0, 4).map(p => ({
-    name: (p.prenom || '') + ' ' + (p.nom || ''),
-    status: p.status === 'Active' ? 'In Progress' : p.status,
-    time: p.time || '09:00 AM',
+const DoctorDashboard = () => {
+  const [appointments, setAppointments] = React.useState([]);
+  const [stats, setStats] = React.useState({ total: 0, today: 0, confirmed: 0, pending: 0 });
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    const loadDashboardData = async () => {
+      try {
+        const data = await api.doctorAppointments.getAll({ date_filter: 'today' });
+        setAppointments(data.appointments.data || []);
+        setStats(data.stats);
+      } catch (err) {
+        console.error('Dashboard data load failed', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadDashboardData();
+  }, []);
+
+  if (loading) return <div className="p-8">Loading dashboard...</div>;
+
+  const schedule = appointments.map(app => ({
+    name: (app.patient?.prenom || '') + ' ' + (app.patient?.nom || ''),
+    status: app.status,
+    time: app.appointment_time,
     procedure: 'Consultation',
-    room: 'Room ' + (Math.floor(Math.random() * 500) + 100)
+    room: 'Room ' + (Math.floor(Math.random() * 5) + 1)
   }));
 
   return (
@@ -45,10 +67,10 @@ const DoctorDashboard = ({ patients }) => {
       </header>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
-        <KPICard title="My Patients" value="28" icon={User} color="bg-indigo-600" subtext="Scheduled for today" />
-        <KPICard title="Avg Wait Time" value="14m" trend="down" trendValue="4.2" icon={Clock} color="bg-orange-500" />
-        <KPICard title="Critical Reviews" value="3" icon={AlertTriangle} color="bg-rose-500" />
-        <KPICard title="Completed" value="12/28" icon={BadgeCheck} color="bg-teal-500" />
+        <KPICard title="Total Appointments" value={stats.total} icon={Calendar} color="bg-indigo-600" />
+        <KPICard title="Today's Rounds" value={stats.today} icon={Clock} color="bg-orange-500" />
+        <KPICard title="Confirmed" value={stats.confirmed} icon={BadgeCheck} color="bg-teal-500" />
+        <KPICard title="Pending" value={stats.pending} icon={AlertTriangle} color="bg-rose-500" />
       </div>
 
       <div className="grid grid-cols-1 xl:grid-cols-12 gap-8">
@@ -63,7 +85,7 @@ const DoctorDashboard = ({ patients }) => {
             </button>
           </div>
           <div className="space-y-3">
-            {schedule.map((patient, idx) => (
+            {schedule.length > 0 ? schedule.map((patient, idx) => (
               <motion.div 
                 key={idx}
                 initial={{ opacity: 0, y: 10 }}
@@ -73,8 +95,8 @@ const DoctorDashboard = ({ patients }) => {
               >
                 <div className="flex items-center gap-4">
                   <div className={`h-12 w-12 rounded-xl flex items-center justify-center font-bold text-xs shadow-sm border ${
-                    patient.status === 'In Progress' ? 'bg-primary text-white border-primary/20' :
-                    patient.status === 'Completed' ? 'bg-emerald-50 text-emerald-600 border-emerald-100' :
+                    patient.status === 'confirmed' ? 'bg-primary text-white border-primary/20' :
+                    patient.status === 'completed' ? 'bg-emerald-50 text-emerald-600 border-emerald-100' :
                     'bg-white text-slate-400 border-slate-200'
                   }`}>
                     {patient.time.split(':')[0]}
@@ -86,9 +108,9 @@ const DoctorDashboard = ({ patients }) => {
                 </div>
                 <div className="flex items-center gap-4">
                   <span className={`px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest ring-1 ${
-                    patient.status === 'In Progress' ? 'bg-indigo-50 text-indigo-600 ring-indigo-100' :
-                    patient.status === 'Waiting' ? 'bg-amber-50 text-amber-600 ring-amber-100' :
-                    patient.status === 'Completed' ? 'bg-emerald-50 text-emerald-600 ring-emerald-100' :
+                    patient.status === 'confirmed' ? 'bg-indigo-50 text-indigo-600 ring-indigo-100' :
+                    patient.status === 'pending' ? 'bg-amber-50 text-amber-600 ring-amber-100' :
+                    patient.status === 'completed' ? 'bg-emerald-50 text-emerald-600 ring-emerald-100' :
                     'bg-slate-50 text-slate-400 ring-slate-100'
                   }`}>
                     {patient.status}
@@ -98,7 +120,11 @@ const DoctorDashboard = ({ patients }) => {
                   </button>
                 </div>
               </motion.div>
-            ))}
+            )) : (
+              <div className="py-12 text-center text-slate-400 font-bold text-sm">
+                No appointments for today.
+              </div>
+            )}
           </div>
         </div>
 
