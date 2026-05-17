@@ -67,25 +67,17 @@ const AdminDashboard = ({ patients, doctors, staff, appointments, setPatients, o
           <h2 className="text-3xl font-black text-on-surface tracking-tight mb-1">Administrative Terminal</h2>
           <p className="text-sm font-medium text-slate-500">Clinic-wide Performance & High-level Metrics</p>
         </div>
-        <div className="flex gap-3">
-          <button className="px-5 py-2.5 bg-white border border-slate-200 rounded-2xl text-xs font-bold uppercase tracking-widest hover:border-primary hover:text-primary transition-all">
-            Export Audit
-          </button>
-          <button className="px-5 py-2.5 bg-primary text-white rounded-2xl text-xs font-bold uppercase tracking-widest shadow-lg shadow-primary/20 hover:scale-[1.02] transition-all active:scale-[0.98]">
-            System Config
-          </button>
-        </div>
       </header>
       
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
-        <KPICard title="Total Patients" value={patients?.length || 0} trend="up" trendValue="12.5" icon={Users} color="bg-blue-600" />
+        <KPICard title="Total Patients" value={patients?.length || 0} icon={Users} color="bg-blue-600" />
         <KPICard title="Doctors" value={doctors?.length || 0} icon={Stethoscope} color="bg-indigo-600" />
         <KPICard title="Medical Staff" value={staff?.length || 0} icon={ClipboardList} color="bg-purple-600" />
         <KPICard title="Appointments" value={appointments?.length || 0} icon={Calendar} color="bg-emerald-600" />
       </div>
 
-      <div className="grid grid-cols-1 xl:grid-cols-12 gap-8">
-        <div className="xl:col-span-8 bg-card-bg p-8 rounded-[2.5rem] border border-card-border shadow-sm transition-all duration-500">
+      <div className="w-[117rem] grid grid-cols-1 xl:grid-cols-12 gap-8">
+        <div className="w-full xl:col-span-8 bg-card-bg p-8 rounded-[2.5rem] border border-card-border shadow-sm transition-all duration-500">
           <div className="flex justify-between items-center mb-10 px-2">
             <div>
               <h3 className="text-xl font-black text-on-surface tracking-tight">siha Admissions</h3>
@@ -194,42 +186,6 @@ const AdminDashboard = ({ patients, doctors, staff, appointments, setPatients, o
                 ))}
               </tbody>
             </table>
-          </div>
-        </div>
-
-        <div className="xl:col-span-4 space-y-8 flex flex-col justify-between">
-          <div className="bg-slate-900 p-10 rounded-[2.5rem] text-white shadow-2xl relative overflow-hidden group h-full">
-            <div className="absolute top-0 right-0 p-12 opacity-10 group-hover:scale-110 transition-transform duration-700">
-              <TrendingUp className="w-48 h-48" />
-            </div>
-            
-            <div className="relative z-10">
-              <h3 className="text-xl font-black mb-2 tracking-tight">Clinic Capacity</h3>
-              <p className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-10">Facility Efficiency Hub</p>
-              
-              <div className="space-y-8">
-                {[
-                  { label: 'Surgery Suite', val: 82, color: 'bg-primary' },
-                  { label: 'Diagnostics Wing', val: 45, color: 'bg-emerald-400' },
-                  { label: 'Outpatient Clinic', val: 92, color: 'bg-error' },
-                ].map((item, i) => (
-                  <div key={i}>
-                    <div className="flex justify-between text-[10px] font-black uppercase tracking-[0.2em] mb-3 text-slate-400">
-                      <span>{item.label}</span>
-                      <span className="text-white">{item.val}%</span>
-                    </div>
-                    <div className="h-2 bg-white/10 rounded-full overflow-hidden">
-                      <motion.div 
-                        initial={{ width: 0 }}
-                        animate={{ width: `${item.val}%` }}
-                        transition={{ duration: 1, delay: i * 0.2 }}
-                        className={`h-full rounded-full ${item.color}`}
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
           </div>
         </div>
       </div>

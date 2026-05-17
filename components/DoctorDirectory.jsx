@@ -114,9 +114,6 @@ const DoctorDirectory = ({ doctors, setDoctors }) => {
           <p className="text-sm font-medium text-slate-500">Manage physician credentials and department assignments</p>
         </div>
         <div className="flex gap-3">
-          <button className="px-5 py-2.5 bg-white border border-slate-200 rounded-2xl text-xs font-bold uppercase tracking-widest hover:border-primary hover:text-primary transition-all flex items-center gap-2">
-            <Download className="w-4 h-4" /> Rosters
-          </button>
           <button 
             onClick={() => handleOpenModal()}
             disabled={loading}

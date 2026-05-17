@@ -1,24 +1,18 @@
+
+
 'use client';
 
-import React from 'react';
+import Logo from '../images/logo-siha.jpeg'
 import Link from 'next/link';
-import { Search, User } from 'lucide-react';
+import Image from "next/image";
 
 const Navbar = ({ userProfile, onTabChange }) => {
   return (
-    <header className="h-20 bg-card-bg/80 backdrop-blur-xl border-b border-card-border sticky top-0 z-50 flex items-center justify-between px-8 transition-colors duration-500">
+    <header className="h-24 bg-card-bg/80 backdrop-blur-xl border-b border-card-border sticky top-0 z-50 flex items-center justify-between px-8 transition-colors duration-500">
       <div className="flex items-center gap-6">
-        <Link href="/" className="text-xl font-black tracking-tight text-primary outline-none hover:scale-105 transition-transform uppercase">
-          siha
+        <Link href="/" className="tracking-tight text-primary outline-none transition-transform uppercase">
+          <Image src={Logo} alt="siha clinic" className='h-[5rem] w-[12rem] ml-5 object-cover'/>
         </Link>
-        <div className="relative group hidden md:block">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-primary transition-colors" />
-          <input 
-            type="text" 
-            placeholder="Search records..." 
-            className="bg-surface border-card-border border rounded-2xl w-80 py-2.5 pl-11 pr-4 text-sm focus:ring-2 focus:ring-primary/20 transition-all outline-none font-bold text-on-surface" 
-          />
-        </div>
       </div>
 
       <div className="flex items-center gap-4">

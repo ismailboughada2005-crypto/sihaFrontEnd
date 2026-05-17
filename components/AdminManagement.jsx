@@ -23,11 +23,18 @@ const AdminManagement = ({ admins, setAdmins }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [editingAdmin, setEditingAdmin] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
   const [formData, setFormData] = useState({
     nom: '',
     email: '',
     motDePasse: ''
   });
+
+  const SENIOR_ADMIN_EMAIL = 'admin@siha.com';
+
+  React.useEffect(() => {
+    api.getUser().then(user => setCurrentUser(user)).catch(() => {});
+  }, []);
 
   const handleOpenModal = (admin = null) => {
     if (admin) {
@@ -141,7 +148,6 @@ const AdminManagement = ({ admins, setAdmins }) => {
                 <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Administrator</th>
                 <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Contact</th>
                 <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Access Level</th>
-                <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-right">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -172,25 +178,14 @@ const AdminManagement = ({ admins, setAdmins }) => {
                   </td>
                   <td className="px-8 py-6">
                     <div className="flex">
-                      <span className="px-3 py-1 bg-slate-900 text-white rounded-full text-[9px] font-black uppercase tracking-widest shadow-lg shadow-black/10 flex items-center gap-2">
-                        <ShieldCheck className="w-3 h-3" /> System Root
+                      <span className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest shadow-lg flex items-center gap-2 ${
+                        admin.email === SENIOR_ADMIN_EMAIL 
+                        ? 'bg-slate-900 text-white shadow-black/10' 
+                        : 'bg-indigo-50 text-indigo-600 shadow-indigo-100 ring-1 ring-indigo-100'
+                      }`}>
+                        {admin.email === SENIOR_ADMIN_EMAIL ? <ShieldCheck className="w-3 h-3" /> : <ShieldAlert className="w-3 h-3" />}
+                        {admin.email === SENIOR_ADMIN_EMAIL ? 'System Root' : 'Administrator'}
                       </span>
-                    </div>
-                  </td>
-                  <td className="px-8 py-6">
-                    <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <button 
-                        onClick={() => handleOpenModal(admin)}
-                        className="p-2.5 text-slate-400 hover:text-primary hover:bg-slate-50 rounded-xl transition-all active:scale-90"
-                      >
-                        <Lock className="w-4.5 h-4.5" />
-                      </button>
-                      <button 
-                        onClick={() => { setAdminToDelete(admin); setIsDeleteModalOpen(true); }}
-                        className="p-2.5 text-rose-500 hover:bg-rose-50 rounded-xl transition-all active:scale-90"
-                      >
-                        <Trash2 className="w-4.5 h-4.5" />
-                      </button>
                     </div>
                   </td>
                 </motion.tr>

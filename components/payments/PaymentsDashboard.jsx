@@ -1,8 +1,14 @@
-'use client';
+"use client";
 
-import React, { useEffect, useState } from 'react';
-import { Calendar, CalendarCheck, DollarSign, Clock, RotateCcw } from 'lucide-react';
-import api from '../../services/api';
+import React, { useEffect, useState } from "react";
+import {
+  Calendar,
+  CalendarCheck,
+  DollarSign,
+  Clock,
+  RotateCcw,
+} from "lucide-react";
+import api from "../../services/api";
 
 const StatCard = ({ label, value, sub, color, icon }) => (
   <div
@@ -11,19 +17,11 @@ const StatCard = ({ label, value, sub, color, icon }) => (
   >
     <div className="text-3xl mb-2">{icon}</div>
 
-    <div className="text-sm text-slate-500 mb-1">
-      {label}
-    </div>
+    <div className="text-sm text-slate-500 mb-1">{label}</div>
 
-    <div className="text-2xl font-bold text-slate-900">
-      {value}
-    </div>
+    <div className="text-2xl font-bold text-slate-900">{value}</div>
 
-    {sub && (
-      <div className="text-xs text-slate-400 mt-1">
-        {sub}
-      </div>
-    )}
+    {sub && <div className="text-xs text-slate-400 mt-1">{sub}</div>}
   </div>
 );
 
@@ -41,10 +39,7 @@ const Bar = ({ label, value, max, color }) => (
       <div
         className="h-full rounded-full transition-all duration-700"
         style={{
-          width: `${Math.min(
-            (value / (max || 1)) * 100,
-            100
-          )}%`,
+          width: `${Math.min((value / (max || 1)) * 100, 100)}%`,
           background: color,
         }}
       />
@@ -78,29 +73,35 @@ export default function PaymentsDashboard() {
 
   if (loading) {
     return (
-      <div className="text-center py-20 text-slate-400 text-lg">
-        Loading dashboard...
+      <div
+        onClick={() => handleOpenModal()}
+        disabled={loading}
+        className="px-5 py-2.5 bg-primary text-white rounded-2xl text-xs font-bold uppercase tracking-widest shadow-lg shadow-primary/20 hover:scale-[1.02] transition-all active:scale-[0.98] flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        {loading ? (
+          <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+        ) : (
+          <Plus className="w-4 h-4" />
+        )}{" "}
+        {loading ? "Loading..." : "Add Patient"}
       </div>
     );
   }
 
-  const maxMonthly = Math.max(
-    ...monthly.map((m) => m.revenue || 0),
-    1
-  );
+  const maxMonthly = Math.max(...monthly.map((m) => m.revenue || 0), 1);
 
   const METHOD_COLORS = {
-    cash: '#10b981',
-    credit_card: '#6366f1',
-    bank_transfer: '#f59e0b',
-    mobile_payment: '#ec4899',
+    cash: "#10b981",
+    credit_card: "#6366f1",
+    bank_transfer: "#f59e0b",
+    mobile_payment: "#ec4899",
   };
 
   const METHOD_LABELS = {
-    cash: 'Cash',
-    credit_card: 'Credit Card',
-    bank_transfer: 'Bank Transfer',
-    mobile_payment: 'Mobile',
+    cash: "Cash",
+    credit_card: "Credit Card",
+    bank_transfer: "Bank Transfer",
+    mobile_payment: "Mobile",
   };
 
   return (
@@ -109,27 +110,21 @@ export default function PaymentsDashboard() {
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-5">
         <StatCard
           label="Daily Revenue"
-          value={`${Number(
-            stats?.daily_revenue || 0
-          ).toLocaleString()} MAD`}
+          value={`${Number(stats?.daily_revenue || 0).toLocaleString()} MAD`}
           color="#10b981"
           icon={<Calendar className="w-8 h-8" />}
         />
 
         <StatCard
           label="Monthly Revenue"
-          value={`${Number(
-            stats?.monthly_revenue || 0
-          ).toLocaleString()} MAD`}
+          value={`${Number(stats?.monthly_revenue || 0).toLocaleString()} MAD`}
           color="#6366f1"
           icon={<CalendarCheck className="w-8 h-8" />}
         />
 
         <StatCard
           label="Total Revenue"
-          value={`${Number(
-            stats?.total_revenue || 0
-          ).toLocaleString()} MAD`}
+          value={`${Number(stats?.total_revenue || 0).toLocaleString()} MAD`}
           color="#3b82f6"
           icon={<DollarSign className="w-8 h-8" />}
         />
@@ -138,7 +133,7 @@ export default function PaymentsDashboard() {
           label="Pending Invoices"
           value={stats?.pending_invoices || 0}
           sub={`${Number(
-            stats?.pending_amount || 0
+            stats?.pending_amount || 0,
           ).toLocaleString()} MAD pending`}
           color="#f59e0b"
           icon={<Clock className="w-8 h-8" />}
@@ -154,17 +149,12 @@ export default function PaymentsDashboard() {
               Monthly Revenue — {year}
             </h3>
 
-            <div className="text-sm text-slate-400">
-              Analytics
-            </div>
+            <div className="text-sm text-slate-400">Analytics</div>
           </div>
 
           <div className="flex items-end gap-2 h-[220px]">
             {monthly.map((m) => {
-              const pct = Math.max(
-                (m.revenue / maxMonthly) * 100,
-                3
-              );
+              const pct = Math.max((m.revenue / maxMonthly) * 100, 3);
 
               return (
                 <div
@@ -176,9 +166,8 @@ export default function PaymentsDashboard() {
                     className="w-full rounded-t-md transition-all duration-700 hover:opacity-80"
                     style={{
                       height: `${pct}%`,
-                      background:
-                        'linear-gradient(180deg,#6366f1,#818cf8)',
-                      minHeight: '6px',
+                      background: "linear-gradient(180deg,#6366f1,#818cf8)",
+                      minHeight: "6px",
                     }}
                   />
 
@@ -198,29 +187,19 @@ export default function PaymentsDashboard() {
               Revenue by Payment Method
             </h3>
 
-            <div className="text-sm text-slate-400">
-              Payments
-            </div>
+            <div className="text-sm text-slate-400">Payments</div>
           </div>
 
           {methods.length === 0 ? (
-            <p className="text-sm text-slate-400">
-              No payment data yet.
-            </p>
+            <p className="text-sm text-slate-400">No payment data yet.</p>
           ) : (
             methods.map((m) => (
               <Bar
                 key={m.payment_method}
-                label={
-                  METHOD_LABELS[m.payment_method] ||
-                  m.payment_method
-                }
+                label={METHOD_LABELS[m.payment_method] || m.payment_method}
                 value={m.total}
                 max={Math.max(...methods.map((x) => x.total))}
-                color={
-                  METHOD_COLORS[m.payment_method] ||
-                  '#6366f1'
-                }
+                color={METHOD_COLORS[m.payment_method] || "#6366f1"}
               />
             ))
           )}

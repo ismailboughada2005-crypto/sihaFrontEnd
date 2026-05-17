@@ -14,11 +14,24 @@ const getAuthHeaders = () => {
 };
 
 const handleResponse = async (response) => {
-  if (!response.ok) {
-    const error = await response.json().catch(() => ({ message: 'Request failed' }));
-    throw new Error(error.message || `HTTP ${response.status}`);
+  const text = await response.text();
+  let data = null;
+  
+  if (text) {
+    try {
+      data = JSON.parse(text);
+    } catch (e) {
+      // If parsing fails but response is OK, we might want to know, 
+      // but for DELETE/204 it's often empty or non-JSON.
+      console.error('Failed to parse JSON response:', text);
+    }
   }
-  return response.json();
+
+  if (!response.ok) {
+    throw new Error(data?.message || `HTTP ${response.status}`);
+  }
+  
+  return data;
 };
 
 export const api = {

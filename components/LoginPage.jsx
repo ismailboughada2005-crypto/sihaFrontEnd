@@ -5,6 +5,8 @@ import { motion } from 'framer-motion';
 import { Mail, Lock, LogIn, ShieldCheck, Activity, UserCog, Stethoscope } from 'lucide-react';
 import api from '../services/api';
 import Cookies from 'js-cookie';
+import Logo from '../images/logo.png';
+import Image from "next/image";
 
 const LoginPage = ({ onLogin }) => {
   const [email, setEmail] = useState('');
@@ -48,7 +50,7 @@ const LoginPage = ({ onLogin }) => {
         
         <div className="text-center mb-10">
           <div className="w-20 h-20 bg-primary/10 rounded-3xl flex items-center justify-center mx-auto mb-6 text-primary rotate-3 hover:rotate-0 transition-transform">
-            <Activity className="w-10 h-10" />
+            <Image src={Logo} alt="siha clinic" className=' '/>
           </div>
           <h1 className="text-3xl font-black text-slate-900 tracking-tight uppercase">siha</h1>
           <p className="text-sm font-bold text-slate-400 uppercase tracking-widest mt-2">Unified Access Portal</p>

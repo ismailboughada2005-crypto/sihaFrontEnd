@@ -56,14 +56,6 @@ const DoctorDashboard = () => {
           <h2 className="text-3xl font-black text-on-surface tracking-tight mb-1">Doctor's Suite</h2>
           <p className="text-sm font-medium text-slate-500">Managing clinical rounds & patient care</p>
         </div>
-        <div className="flex gap-3">
-          <button className="px-5 py-2.5 bg-white border border-slate-200 rounded-2xl text-xs font-bold uppercase tracking-widest hover:border-primary hover:text-primary transition-all">
-            Schedule
-          </button>
-          <button className="px-5 py-2.5 bg-primary text-white rounded-2xl text-xs font-bold uppercase tracking-widest shadow-lg shadow-primary/20 hover:scale-[1.02] transition-all active:scale-[0.98]">
-            New Prescription
-          </button>
-        </div>
       </header>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
@@ -73,7 +65,7 @@ const DoctorDashboard = () => {
         <KPICard title="Pending" value={stats.pending} icon={AlertTriangle} color="bg-rose-500" />
       </div>
 
-      <div className="grid grid-cols-1 xl:grid-cols-12 gap-8">
+      <div className="grid grid-cols-1 xl:grid-cols-12 gap-8 w-[118rem]">
         <div className="xl:col-span-8 bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm">
           <div className="flex justify-between items-center mb-8 px-2">
             <div>
@@ -125,28 +117,6 @@ const DoctorDashboard = () => {
                 No appointments for today.
               </div>
             )}
-          </div>
-        </div>
-
-        <div className="xl:col-span-4 bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm">
-          <h3 className="text-xl font-black text-on-surface mb-8 tracking-tight px-2">Clinical Shortcuts</h3>
-          <div className="grid grid-cols-2 gap-4">
-            {['Charts', 'Rx', 'Lab Orders', 'Referrals'].map((label, idx) => (
-              <button key={idx} className="p-6 border border-slate-100 rounded-3xl flex flex-col items-center justify-center gap-3 hover:bg-slate-50 hover:border-primary/20 transition-all group shadow-sm">
-                <div className="h-10 w-10 bg-primary/5 rounded-xl flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
-                  {idx === 0 ? <User className="w-5 h-5" /> : idx === 1 ? <Plus className="w-5 h-5" /> : idx === 2 ? <ClipboardList className="w-5 h-5" /> : <ChevronRight className="w-5 h-5" />}
-                </div>
-                <span className="text-[10px] font-black uppercase tracking-widest text-on-surface">{label}</span>
-              </button>
-            ))}
-          </div>
-          <div className="mt-8 p-6 bg-primary/5 rounded-3xl border border-primary/10">
-            <h4 className="text-xs font-black text-primary mb-2 flex items-center gap-2 uppercase tracking-widest">
-              <Star className="w-4 h-4 fill-primary" /> Success Insight
-            </h4>
-            <p className="text-[11px] text-on-surface-variant leading-relaxed font-bold italic">
-              "Your documentation flow is up 12% this week. Keep up the high efficiency metrics!"
-            </p>
           </div>
         </div>
       </div>

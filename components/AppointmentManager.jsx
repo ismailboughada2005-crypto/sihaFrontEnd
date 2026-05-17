@@ -47,7 +47,7 @@ const AppointmentManager = ({ appointments, setAppointments, patients, doctors }
         appointment_date: appointment.appointment_date,
         appointment_time: appointment.appointment_time,
         type: appointment.type,
-        status: appointment.status,
+        status: appointment.status = 'pending',
         notes: appointment.notes || ''
       });
     } else {
@@ -143,7 +143,7 @@ const AppointmentManager = ({ appointments, setAppointments, patients, doctors }
         </button>
       </header>
 
-      <div className="grid grid-cols-1 xl:grid-cols-12 gap-8">
+      <div className="grid grid-cols-1 xl:grid-cols-12 gap-8 w-[118rem]">
         <div className="xl:col-span-8 bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden">
           <div className="p-8 border-b border-slate-50 flex flex-col md:flex-row md:items-center justify-between gap-4">
              <div className="relative flex-1 max-w-md">
@@ -212,54 +212,6 @@ const AppointmentManager = ({ appointments, setAppointments, patients, doctors }
             )}
           </div>
         </div>
-
-        <div className="xl:col-span-4 space-y-8">
-           <div className="bg-slate-900 p-10 rounded-[2.5rem] text-white shadow-2xl relative overflow-hidden h-fit">
-              <div className="relative z-10 flex flex-col justify-between h-full">
-                <div>
-                   <TrendingUp className="w-12 h-12 text-primary mb-6" />
-                   <h3 className="text-2xl font-black tracking-tight mb-2">Efficiency Insight</h3>
-                   <p className="text-slate-400 text-xs font-bold uppercase tracking-widest leading-relaxed">
-                     Center-wide booking density is <span className="text-white">up 14%</span> compared to last month.
-                   </p>
-                </div>
-                
-                <div className="mt-12 space-y-4">
-                   <div className="flex justify-between items-end">
-                      <span className="text-[10px] font-black uppercase text-slate-500 tracking-[0.2em]">Peak Load Today</span>
-                      <span className="text-xl font-black">11:00 AM</span>
-                   </div>
-                   <div className="h-1 bg-white/10 rounded-full overflow-hidden">
-                      <motion.div 
-                        initial={{ width: 0 }}
-                        animate={{ width: '82%' }}
-                        className="h-full bg-primary"
-                      />
-                   </div>
-                </div>
-              </div>
-           </div>
-
-           <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm">
-              <h4 className="text-sm font-black text-on-surface uppercase tracking-[0.15em] mb-6 px-2">Pending Reminders</h4>
-              <div className="space-y-4">
-                 {[
-                   { p: 'Elena R.', t: '10 mins ago', msg: 'Rescheduled neurology' },
-                   { p: 'David W.', t: '1 hour ago', msg: 'Awaiting lab confirmation' },
-                 ].map((rem, i) => (
-                   <div key={i} className="flex items-start gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100">
-                      <div className="p-2 bg-amber-50 text-amber-500 rounded-lg">
-                        <Clock className="w-4 h-4" />
-                      </div>
-                      <div>
-                        <p className="text-xs font-black text-on-surface">{rem.p} <span className="text-[10px] font-bold text-slate-400 lowercase ml-2">{rem.t}</span></p>
-                        <p className="text-[10px] font-medium text-slate-500 mt-0.5">{rem.msg}</p>
-                      </div>
-                   </div>
-                 ))}
-              </div>
-           </div>
-        </div>
       </div>
 
       <AnimatePresence>
@@ -320,7 +272,7 @@ const AppointmentManager = ({ appointments, setAppointments, patients, doctors }
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-4 w-[63rem]">
                   <div className="space-y-2">
                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Session Type</label>
                     <select className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 px-5 text-sm font-bold outline-none appearance-none" value={formData.type} onChange={(e) => setFormData({...formData, type: e.target.value})}>
@@ -331,17 +283,7 @@ const AppointmentManager = ({ appointments, setAppointments, patients, doctors }
                       <option>Therapy</option>
                     </select>
                   </div>
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Booking Status</label>
-                    <select className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 px-5 text-sm font-bold outline-none appearance-none" value={formData.status} onChange={(e) => setFormData({...formData, status: e.target.value})}>
-                      <option value="pending">Pending</option>
-                      <option value="confirmed">Confirmed</option>
-                      <option value="completed">Completed</option>
-                      <option value="cancelled">Cancelled</option>
-                    </select>
-                  </div>
                 </div>
-
                 <div className="space-y-2">
                   <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Notes</label>
                   <textarea 

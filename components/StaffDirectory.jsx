@@ -110,9 +110,6 @@ const StaffDirectory = ({ staff, setStaff }) => {
           <p className="text-sm font-medium text-slate-500">Manage non-clinical personnel and administrative roles</p>
         </div>
         <div className="flex gap-3">
-          <button className="px-5 py-2.5 bg-white border border-slate-200 rounded-2xl text-xs font-bold uppercase tracking-widest hover:border-primary hover:text-primary transition-all flex items-center gap-2">
-            <ShieldCheck className="w-4 h-4" /> Auth Protocol
-          </button>
           <button 
             onClick={() => handleOpenModal()}
             disabled={loading}
