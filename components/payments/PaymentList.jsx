@@ -27,7 +27,7 @@ const STATUS_STYLES = {
 const Badge = ({ status }) => (
   <span
     className={`px-3 py-1 rounded-full text-xs font-semibold capitalize ${
-      STATUS_STYLES[status] || "bg-slate-100 text-slate-500"
+      STATUS_STYLES[status] || "bg-card-bg dark:bg-slate-800 text-on-surface-variant"
     }`}
   >
     {status}
@@ -36,13 +36,13 @@ const Badge = ({ status }) => (
 
 const Modal = ({ title, onClose, children }) => (
   <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
-    <div className="bg-white w-full max-w-2xl rounded-2xl shadow-2xl overflow-auto max-h-[90vh]">
+    <div className="bg-card-bg w-full max-w-2xl rounded-2xl shadow-2xl overflow-auto max-h-[90vh]">
       <div className="flex items-center justify-between px-6 py-5 border-b">
-        <h2 className="text-lg font-bold text-slate-800">{title}</h2>
+        <h2 className="text-lg font-bold text-on-surface">{title}</h2>
 
         <button
           onClick={onClose}
-          className="text-2xl text-slate-400 hover:text-slate-600"
+          className="text-2xl text-slate-400 hover:text-on-surface-variant"
         >
           ×
         </button>
@@ -65,7 +65,7 @@ function ReceiptModal({ payment, onClose }) {
         <div className="text-center border-b-2 border-dashed border-slate-200 pb-5 mb-6">
           <h2 className="text-2xl font-bold text-indigo-500">Siha Clinic</h2>
 
-          <p className="text-sm text-slate-500 mt-1">
+          <p className="text-sm text-on-surface-variant mt-1">
             Official Payment Receipt
           </p>
         </div>
@@ -102,7 +102,7 @@ function ReceiptModal({ payment, onClose }) {
 
         {/* AMOUNT */}
         <div className="bg-green-50 rounded-2xl p-6 text-center mb-6">
-          <div className="text-sm text-slate-500">Amount Paid</div>
+          <div className="text-sm text-on-surface-variant">Amount Paid</div>
 
           <div className="text-4xl font-bold text-green-600 mt-2">
             {Number(p.amount).toFixed(2)} MAD
@@ -111,12 +111,12 @@ function ReceiptModal({ payment, onClose }) {
 
         {/* SIGNATURES */}
         <div className="border-t border-dashed border-slate-200 pt-6 grid grid-cols-2 gap-10 mb-4">
-          <div className="text-center text-xs text-slate-500">
+          <div className="text-center text-xs text-on-surface-variant">
             <div className="h-10 border-b border-slate-700 mb-2"></div>
             Cashier Signature
           </div>
 
-          <div className="text-center text-xs text-slate-500">
+          <div className="text-center text-xs text-on-surface-variant">
             <div className="h-10 border-b border-slate-700 mb-2"></div>
             Patient Signature
           </div>
@@ -131,7 +131,7 @@ function ReceiptModal({ payment, onClose }) {
       <div className="flex justify-end gap-3 mt-6">
         <button
           onClick={onClose}
-          className="px-5 py-2 border border-slate-200 rounded-lg hover:bg-slate-50 transition"
+          className="px-5 py-2 border border-slate-200 rounded-lg hover:bg-surface transition"
         >
           Close
         </button>
@@ -150,13 +150,13 @@ function ReceiptModal({ payment, onClose }) {
 function DetailsModal({ payment, onClose }) {
   const p = payment;
   const labelClass = "text-[10px] font-black uppercase tracking-wider text-slate-400 mb-1";
-  const valueClass = "text-sm font-bold text-slate-800";
+  const valueClass = "text-sm font-bold text-on-surface";
 
   return (
     <Modal title="Transaction Detailed Analysis" onClose={onClose}>
       <div className="space-y-8">
         {/* Header Info */}
-        <div className="flex items-center justify-between bg-slate-50 p-6 rounded-2xl border border-slate-100">
+        <div className="flex items-center justify-between bg-surface p-6 rounded-2xl border border-card-border">
           <div>
             <div className={labelClass}>Transaction ID</div>
             <div className="text-xl font-black text-indigo-600">PAY-{String(p.id).padStart(6, "0")}</div>
@@ -172,12 +172,12 @@ function DetailsModal({ payment, onClose }) {
           <div>
             <div className={labelClass}>Patient Details</div>
             <div className={valueClass}>{p.patient ? `${p.patient.nom} ${p.patient.prenom}` : "N/A"}</div>
-            <div className="text-xs text-slate-500 mt-1">{p.patient?.email || "No email provided"}</div>
+            <div className="text-xs text-on-surface-variant mt-1">{p.patient?.email || "No email provided"}</div>
           </div>
           <div>
             <div className={labelClass}>Payment Timeline</div>
             <div className={valueClass}>{new Date(p.payment_date).toLocaleDateString(undefined, { dateStyle: 'long' })}</div>
-            <div className="text-xs text-slate-500 mt-1">{new Date(p.payment_date).toLocaleTimeString()}</div>
+            <div className="text-xs text-on-surface-variant mt-1">{new Date(p.payment_date).toLocaleTimeString()}</div>
           </div>
           <div>
             <div className={labelClass}>Billing Method</div>
@@ -196,7 +196,7 @@ function DetailsModal({ payment, onClose }) {
               <div className="text-[10px] font-black uppercase tracking-widest opacity-60">Settlement Amount</div>
               <div className="text-4xl font-black mt-1">{Number(p.amount).toLocaleString()} <span className="text-lg opacity-80">MAD</span></div>
             </div>
-            <div className="h-12 w-12 bg-white/10 rounded-full flex items-center justify-center border border-white/20">
+            <div className="h-12 w-12 bg-card-bg/10 rounded-full flex items-center justify-center border border-white/20">
               <CreditCard className="w-6 h-6 text-white" />
             </div>
           </div>
@@ -211,14 +211,14 @@ function DetailsModal({ payment, onClose }) {
         )}
 
         {/* Footer Audit */}
-        <div className="pt-6 border-t border-slate-100 flex justify-between items-center">
+        <div className="pt-6 border-t border-card-border flex justify-between items-center">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-slate-200 rounded-full flex items-center justify-center text-[10px] font-bold text-slate-500">
+            <div className="w-8 h-8 bg-slate-200 rounded-full flex items-center justify-center text-[10px] font-bold text-on-surface-variant">
               {p.processor?.name?.charAt(0) || "S"}
             </div>
             <div>
               <div className="text-[10px] font-bold text-slate-400">Processed By</div>
-              <div className="text-xs font-bold text-slate-600">{p.processor?.name || "System Administrator"}</div>
+              <div className="text-xs font-bold text-on-surface-variant">{p.processor?.name || "System Administrator"}</div>
             </div>
           </div>
           <button 
@@ -327,11 +327,11 @@ export default function PaymentList() {
       </div>
 
       {/* TABLE */}
-      <div className="bg-white rounded-2xl shadow-sm overflow-hidden border border-slate-100">
+      <div className="bg-card-bg rounded-2xl shadow-sm overflow-hidden border border-card-border">
         <div className="overflow-x-auto">
           <table className="w-full border-collapse">
             <thead>
-              <tr className="bg-slate-50 border-b">
+              <tr className="bg-surface border-b">
                 {[
                   "#",
                   "Patient",
@@ -344,7 +344,7 @@ export default function PaymentList() {
                 ].map((h) => (
                   <th
                     key={h}
-                    className="px-4 py-3 text-left text-xs font-semibold text-slate-500"
+                    className="px-4 py-3 text-left text-xs font-semibold text-on-surface-variant"
                   >
                     {h}
                   </th>
@@ -369,7 +369,7 @@ export default function PaymentList() {
                 payments.map((p) => (
                   <tr
                     key={p.id}
-                    className="border-b hover:bg-slate-50 transition"
+                    className="border-b hover:bg-surface transition"
                   >
                     <td className="px-4 py-3 text-sm text-slate-400">
                       PAY-
@@ -396,7 +396,7 @@ export default function PaymentList() {
                       </div>
                     </td>
 
-                    <td className="px-4 py-3 text-sm text-slate-500">
+                    <td className="px-4 py-3 text-sm text-on-surface-variant">
                       {new Date(p.payment_date).toLocaleDateString()}
                     </td>
 

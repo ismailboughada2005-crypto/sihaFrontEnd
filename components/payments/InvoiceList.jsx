@@ -18,7 +18,7 @@ const STATUS_LABELS = {
 const Badge = ({ status }) => (
   <span
     className={`px-3 py-1 rounded-full text-xs font-semibold ${
-      STATUS_COLORS[status] || 'bg-slate-100 text-slate-600'
+      STATUS_COLORS[status] || 'bg-card-bg dark:bg-slate-800 text-on-surface-variant'
     }`}
   >
     {STATUS_LABELS[status] || status}
@@ -27,13 +27,13 @@ const Badge = ({ status }) => (
 
 const Modal = ({ title, onClose, children }) => (
   <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-    <div className="w-full max-w-3xl max-h-[90vh] overflow-auto rounded-2xl bg-white shadow-2xl">
-      <div className="flex items-center justify-between border-b border-slate-100 px-6 py-5">
-        <h2 className="text-lg font-bold text-slate-800">{title}</h2>
+    <div className="w-full max-w-3xl max-h-[90vh] overflow-auto rounded-2xl bg-card-bg shadow-2xl">
+      <div className="flex items-center justify-between border-b border-card-border px-6 py-5">
+        <h2 className="text-lg font-bold text-on-surface">{title}</h2>
 
         <button
           onClick={onClose}
-          className="text-2xl text-slate-400 hover:text-slate-700"
+          className="text-2xl text-slate-400 hover:text-on-surface-variant"
         >
           ×
         </button>
@@ -121,7 +121,7 @@ function CreateInvoiceModal({ patients, onClose, onCreated }) {
     'w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:border-indigo-500';
 
   const labelClass =
-    'mb-1 block text-xs font-semibold text-slate-700';
+    'mb-1 block text-xs font-semibold text-on-surface-variant';
 
   return (
     <Modal title="Create New Invoice" onClose={onClose}>
@@ -186,7 +186,7 @@ function CreateInvoiceModal({ patients, onClose, onCreated }) {
 
         <div className="mb-5">
           <div className="mb-3 flex items-center justify-between">
-            <h4 className="text-sm font-semibold text-slate-700">
+            <h4 className="text-sm font-semibold text-on-surface-variant">
               Invoice Items
             </h4>
 
@@ -266,7 +266,7 @@ function CreateInvoiceModal({ patients, onClose, onCreated }) {
           </div>
         </div>
 
-        <div className="mb-5 rounded-xl bg-slate-50 p-4 text-sm">
+        <div className="mb-5 rounded-xl bg-surface p-4 text-sm">
           <div className="mb-1 flex justify-between">
             <span>Subtotal</span>
             <strong>{subtotal.toFixed(2)} MAD</strong>
@@ -296,7 +296,7 @@ function CreateInvoiceModal({ patients, onClose, onCreated }) {
           <button
             type="button"
             onClick={onClose}
-            className="rounded-lg border border-slate-200 px-5 py-2 hover:bg-slate-50"
+            className="rounded-lg border border-slate-200 px-5 py-2 hover:bg-surface"
           >
             Cancel
           </button>
@@ -352,7 +352,7 @@ function RecordPaymentModal({ invoice, onClose, onSaved }) {
     'w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:border-green-500';
 
   const labelClass =
-    'mb-1 block text-xs font-semibold text-slate-700';
+    'mb-1 block text-xs font-semibold text-on-surface-variant';
 
   return (
     <Modal
@@ -449,7 +449,7 @@ function RecordPaymentModal({ invoice, onClose, onSaved }) {
           <button
             type="button"
             onClick={onClose}
-            className="rounded-lg border border-slate-200 px-5 py-2 hover:bg-slate-50"
+            className="rounded-lg border border-slate-200 px-5 py-2 hover:bg-surface"
           >
             Cancel
           </button>
@@ -570,11 +570,11 @@ export default function InvoiceList() {
       </div>
 
       {/* Table */}
-      <div className="overflow-hidden rounded-2xl bg-white shadow-sm">
+      <div className="overflow-hidden rounded-2xl bg-card-bg shadow-sm">
         <div className="overflow-x-auto">
           <table className="w-full border-collapse">
             <thead>
-              <tr className="border-b border-slate-100 bg-slate-50">
+              <tr className="border-b border-card-border bg-surface">
                 {[
                   'Invoice #',
                   'Patient',
@@ -587,7 +587,7 @@ export default function InvoiceList() {
                 ].map((h) => (
                   <th
                     key={h}
-                    className="whitespace-nowrap px-4 py-3 text-left text-xs font-semibold text-slate-500"
+                    className="whitespace-nowrap px-4 py-3 text-left text-xs font-semibold text-on-surface-variant"
                   >
                     {h}
                   </th>
@@ -618,7 +618,7 @@ export default function InvoiceList() {
                 invoices.map((inv) => (
                   <tr
                     key={inv.id}
-                    className="border-b border-slate-100 hover:bg-slate-50"
+                    className="border-b border-card-border hover:bg-surface"
                   >
                     <td className="px-4 py-3 text-sm font-semibold text-indigo-600">
                       {inv.invoice_number}
@@ -642,7 +642,7 @@ export default function InvoiceList() {
                       {Number(inv.remaining_amount).toFixed(2)}
                     </td>
 
-                    <td className="px-4 py-3 text-sm text-slate-500">
+                    <td className="px-4 py-3 text-sm text-on-surface-variant">
                       {inv.due_date}
                     </td>
 

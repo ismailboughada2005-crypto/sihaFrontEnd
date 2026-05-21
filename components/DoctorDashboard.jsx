@@ -54,7 +54,7 @@ const DoctorDashboard = () => {
       <header className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h2 className="text-3xl font-black text-on-surface tracking-tight mb-1">Doctor's Suite</h2>
-          <p className="text-sm font-medium text-slate-500">Managing clinical rounds & patient care</p>
+          <p className="text-sm font-medium text-on-surface-variant">Managing clinical rounds & patient care</p>
         </div>
       </header>
 
@@ -66,7 +66,7 @@ const DoctorDashboard = () => {
       </div>
 
       <div className="grid grid-cols-1 xl:grid-cols-12 gap-8 w-[118rem]">
-        <div className="xl:col-span-8 bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm">
+        <div className="xl:col-span-8 bg-card-bg p-8 rounded-[2.5rem] border border-card-border shadow-sm">
           <div className="flex justify-between items-center mb-8 px-2">
             <div>
               <h3 className="text-xl font-black text-on-surface tracking-tight">Today's Schedule</h3>
@@ -83,13 +83,13 @@ const DoctorDashboard = () => {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: idx * 0.1 }}
-                className="flex items-center justify-between p-5 bg-slate-50 border border-slate-100 rounded-2xl hover:border-primary/20 hover:bg-white transition-all group cursor-pointer shadow-sm"
+                className="flex items-center justify-between p-5 bg-surface border border-card-border rounded-2xl hover:border-primary/20 hover:bg-card-bg transition-all group cursor-pointer shadow-sm"
               >
                 <div className="flex items-center gap-4">
                   <div className={`h-12 w-12 rounded-xl flex items-center justify-center font-bold text-xs shadow-sm border ${
                     patient.status === 'confirmed' ? 'bg-primary text-white border-primary/20' :
                     patient.status === 'completed' ? 'bg-emerald-50 text-emerald-600 border-emerald-100' :
-                    'bg-white text-slate-400 border-slate-200'
+                    'bg-card-bg text-slate-400 border-slate-200'
                   }`}>
                     {patient.time.split(':')[0]}
                   </div>
@@ -103,7 +103,7 @@ const DoctorDashboard = () => {
                     patient.status === 'confirmed' ? 'bg-indigo-50 text-indigo-600 ring-indigo-100' :
                     patient.status === 'pending' ? 'bg-amber-50 text-amber-600 ring-amber-100' :
                     patient.status === 'completed' ? 'bg-emerald-50 text-emerald-600 ring-emerald-100' :
-                    'bg-slate-50 text-slate-400 ring-slate-100'
+                    'bg-surface text-slate-400 ring-card-border'
                   }`}>
                     {patient.status}
                   </span>

@@ -35,7 +35,8 @@ const AppointmentManager = ({ appointments, setAppointments, patients, doctors }
     appointment_time: '',
     type: 'Consultation',
     status: 'pending',
-    notes: ''
+    notes: '',
+    room_id: ''
   });
 
   const handleOpenModal = (appointment = null) => {
@@ -47,8 +48,9 @@ const AppointmentManager = ({ appointments, setAppointments, patients, doctors }
         appointment_date: appointment.appointment_date,
         appointment_time: appointment.appointment_time,
         type: appointment.type,
-        status: appointment.status = 'pending',
-        notes: appointment.notes || ''
+        status: appointment.status || 'pending',
+        notes: appointment.notes || '',
+        room_id: appointment.room_id || ''
       });
     } else {
       setEditingAppointment(null);
@@ -59,7 +61,8 @@ const AppointmentManager = ({ appointments, setAppointments, patients, doctors }
         appointment_time: '09:00',
         type: 'Consultation',
         status: 'pending',
-        notes: ''
+        notes: '',
+        room_id: ''
       });
     }
     setIsModalOpen(true);
@@ -79,7 +82,7 @@ const AppointmentManager = ({ appointments, setAppointments, patients, doctors }
       setIsModalOpen(false);
       setError(null);
     } catch (err) {
-      setError('Failed to save appointment: ' + err.message);
+      setError(err.message || 'Failed to save appointment');
     } finally {
       setLoading(false);
     }
@@ -100,7 +103,7 @@ const AppointmentManager = ({ appointments, setAppointments, patients, doctors }
         setAppointmentToDelete(null);
         setError(null);
       } catch (err) {
-        setError('Failed to cancel appointment: ' + err.message);
+        setError(err.message || 'Failed to cancel appointment');
       } finally {
         setLoading(false);
       }
@@ -113,6 +116,17 @@ const AppointmentManager = ({ appointments, setAppointments, patients, doctors }
     return (p.prenom || '') + ' ' + (p.nom || '');
   };
   const getDoctorName = (id) => doctors.find(d => String(d.id) === String(id))?.nom || 'Unknown Doctor';
+  
+  const isRoomAvailable = (roomId, date, time, currentAppId) => {
+    if (!roomId) return true;
+    return !appointments.some(app => 
+      String(app.room_id) === String(roomId) &&
+      app.appointment_date === date &&
+      app.appointment_time === time &&
+      ['confirmed', 'pending'].includes(app.status) &&
+      (currentAppId ? String(app.id) !== String(currentAppId) : true)
+    );
+  };
 
   const filteredAppointments = appointments.filter(a => 
     getPatientName(a.patient_id).toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -132,7 +146,7 @@ const AppointmentManager = ({ appointments, setAppointments, patients, doctors }
       <header className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h2 className="text-3xl font-black text-on-surface tracking-tight mb-1">Appointment Hub</h2>
-          <p className="text-sm font-medium text-slate-500">Coordinate clinical sessions and specialist availability</p>
+          <p className="text-sm font-medium text-on-surface-variant">Coordinate clinical sessions and specialist availability</p>
         </div>
         <button 
           onClick={() => handleOpenModal()}
@@ -144,21 +158,21 @@ const AppointmentManager = ({ appointments, setAppointments, patients, doctors }
       </header>
 
       <div className="grid grid-cols-1 xl:grid-cols-12 gap-8 w-[118rem]">
-        <div className="xl:col-span-8 bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden">
-          <div className="p-8 border-b border-slate-50 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="xl:col-span-8 bg-card-bg rounded-[2.5rem] border border-card-border shadow-sm overflow-hidden">
+          <div className="p-8 border-b border-card-border flex flex-col md:flex-row md:items-center justify-between gap-4">
              <div className="relative flex-1 max-w-md">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
               <input 
                 type="text" 
                 placeholder="Find session by patient or provider..." 
-                className="bg-slate-50 border-none rounded-2xl w-full py-3 pl-12 pr-4 text-sm focus:ring-2 focus:ring-primary/20 transition-all outline-none font-medium h-12"
+                className="bg-surface border-none rounded-2xl w-full py-3 pl-12 pr-4 text-sm focus:ring-2 focus:ring-primary/20 transition-all outline-none font-medium h-12"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
             <div className="flex gap-2">
-              <button className="px-4 py-2 rounded-xl bg-slate-50 text-[10px] font-black uppercase tracking-widest text-slate-500 hover:bg-slate-100 transition-colors">Today</button>
-              <button className="px-4 py-2 rounded-xl bg-white border border-slate-100 text-[10px] font-black uppercase tracking-widest text-slate-400 hover:bg-slate-50 transition-colors">Upcoming</button>
+              <button className="px-4 py-2 rounded-xl bg-surface text-[10px] font-black uppercase tracking-widest text-on-surface-variant hover:bg-card-bg dark:bg-slate-800 transition-colors">Today</button>
+              <button className="px-4 py-2 rounded-xl bg-card-bg border border-card-border text-[10px] font-black uppercase tracking-widest text-slate-400 hover:bg-surface transition-colors">Upcoming</button>
             </div>
           </div>
 
@@ -168,10 +182,10 @@ const AppointmentManager = ({ appointments, setAppointments, patients, doctors }
                 key={app.id}
                 initial={{ opacity: 0, scale: 0.98 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="flex flex-col md:flex-row items-center justify-between p-6 bg-white border border-slate-50 rounded-[2rem] hover:border-primary/20 hover:shadow-xl hover:shadow-slate-200/40 transition-all group cursor-default"
+                className="flex flex-col md:flex-row items-center justify-between p-6 bg-card-bg border border-card-border rounded-[2rem] hover:border-primary/20 hover:shadow-xl hover:shadow-slate-200/40 transition-all group cursor-default"
               >
                 <div className="flex items-center gap-6 w-full md:w-auto">
-                  <div className="flex flex-col items-center justify-center h-16 w-16 bg-slate-50 rounded-2xl group-hover:bg-primary/5 transition-colors">
+                  <div className="flex flex-col items-center justify-center h-16 w-16 bg-surface rounded-2xl group-hover:bg-primary/5 transition-colors">
                     <span className="text-[10px] font-black text-slate-400 uppercase group-hover:text-primary/50">{app.appointment_date.split('-')[1]}/{app.appointment_date.split('-')[2]}</span>
                     <span className="text-lg font-black text-on-surface group-hover:text-primary transition-colors">{app.appointment_time}</span>
                   </div>
@@ -179,6 +193,11 @@ const AppointmentManager = ({ appointments, setAppointments, patients, doctors }
                     <h4 className="text-base font-black text-on-surface group-hover:text-primary transition-colors">{getPatientName(app.patient_id)}</h4>
                     <p className="text-xs font-bold text-slate-400 flex items-center gap-2 mt-1">
                       <Stethoscope className="w-3.5 h-3.5 text-primary" /> {getDoctorName(app.doctor_id)} • {app.type}
+                      {app.room_id && (
+                        <span className="ml-2 px-2 py-0.5 rounded bg-card-bg dark:bg-slate-800 text-[10px] font-black uppercase tracking-wider text-on-surface-variant">
+                          Room {app.room_id}
+                        </span>
+                      )}
                     </p>
                   </div>
                 </div>
@@ -220,7 +239,7 @@ const AppointmentManager = ({ appointments, setAppointments, patients, doctors }
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setIsModalOpen(false)} className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" />
             <motion.div 
               initial={{ opacity: 0, scale: 0.9, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="relative w-full max-w-xl bg-white rounded-[2.5rem] shadow-2xl p-10 overflow-hidden"
+              className="relative w-full max-w-xl bg-card-bg rounded-[2.5rem] shadow-2xl p-8"
             >
               <h3 className="text-2xl font-black text-on-surface tracking-tight mb-8">
                 {editingAppointment ? 'Modify Booking' : 'Schedule New Session'}
@@ -231,7 +250,7 @@ const AppointmentManager = ({ appointments, setAppointments, patients, doctors }
                   <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Patient</label>
                   <select 
                     required
-                    className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 px-5 text-sm font-bold outline-none appearance-none"
+                    className="w-full bg-surface border border-card-border rounded-2xl py-4 px-5 text-sm font-bold outline-none appearance-none"
                     value={formData.patient_id}
                     onChange={(e) => setFormData({...formData, patient_id: e.target.value})}
                   >
@@ -243,7 +262,7 @@ const AppointmentManager = ({ appointments, setAppointments, patients, doctors }
                   <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Assigned Specialist</label>
                   <select 
                     required
-                    className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 px-5 text-sm font-bold outline-none appearance-none"
+                    className="w-full bg-surface border border-card-border rounded-2xl py-4 px-5 text-sm font-bold outline-none appearance-none"
                     value={formData.doctor_id}
                     onChange={(e) => setFormData({...formData, doctor_id: e.target.value})}
                   >
@@ -256,7 +275,7 @@ const AppointmentManager = ({ appointments, setAppointments, patients, doctors }
                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Date</label>
                     <input 
                       required type="date" 
-                      className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 px-5 text-sm font-bold outline-none"
+                      className="w-full bg-surface border border-card-border rounded-2xl py-4 px-5 text-sm font-bold outline-none"
                       value={formData.appointment_date}
                       onChange={(e) => setFormData({...formData, appointment_date: e.target.value})}
                     />
@@ -265,17 +284,17 @@ const AppointmentManager = ({ appointments, setAppointments, patients, doctors }
                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Time</label>
                     <input 
                       required type="time" 
-                      className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 px-5 text-sm font-bold outline-none"
+                      className="w-full bg-surface border border-card-border rounded-2xl py-4 px-5 text-sm font-bold outline-none"
                       value={formData.appointment_time}
                       onChange={(e) => setFormData({...formData, appointment_time: e.target.value})}
                     />
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4 w-[63rem]">
+                <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Session Type</label>
-                    <select className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 px-5 text-sm font-bold outline-none appearance-none" value={formData.type} onChange={(e) => setFormData({...formData, type: e.target.value})}>
+                    <select className="w-full bg-surface border border-card-border rounded-2xl py-4 px-5 text-sm font-bold outline-none appearance-none" value={formData.type} onChange={(e) => setFormData({...formData, type: e.target.value})}>
                       <option>Consultation</option>
                       <option>Follow-up</option>
                       <option>Surgery</option>
@@ -283,11 +302,12 @@ const AppointmentManager = ({ appointments, setAppointments, patients, doctors }
                       <option>Therapy</option>
                     </select>
                   </div>
+
                 </div>
                 <div className="space-y-2">
                   <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Notes</label>
                   <textarea 
-                    className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 px-5 text-sm font-bold outline-none min-h-[80px]"
+                    className="w-full bg-surface border border-card-border rounded-2xl py-4 px-5 text-sm font-bold outline-none min-h-[80px]"
                     placeholder="Add any notes..."
                     value={formData.notes}
                     onChange={(e) => setFormData({...formData, notes: e.target.value})}
@@ -295,7 +315,7 @@ const AppointmentManager = ({ appointments, setAppointments, patients, doctors }
                 </div>
 
                 <div className="pt-8 flex gap-4">
-                  <button type="button" onClick={() => setIsModalOpen(false)} className="flex-1 py-4 bg-slate-50 rounded-2xl text-xs font-black uppercase text-slate-400">Discard</button>
+                  <button type="button" onClick={() => setIsModalOpen(false)} className="flex-1 py-4 bg-surface rounded-2xl text-xs font-black uppercase text-slate-400">Discard</button>
                   <button 
                     type="submit" 
                     disabled={loading}
@@ -326,21 +346,21 @@ const AppointmentManager = ({ appointments, setAppointments, patients, doctors }
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="relative w-full max-w-md bg-white rounded-[2.5rem] shadow-2xl p-10 overflow-hidden"
+              className="relative w-full max-w-md bg-card-bg rounded-[2.5rem] shadow-2xl p-10 overflow-hidden"
             >
               <div className="text-center">
                 <div className="w-20 h-20 bg-rose-50 rounded-full flex items-center justify-center mx-auto mb-6 text-rose-500">
                   <Trash2 className="w-10 h-10" />
                 </div>
                 <h3 className="text-2xl font-black text-on-surface tracking-tight mb-2">Cancel Appointment?</h3>
-                <p className="text-sm font-medium text-slate-500 leading-relaxed">
+                <p className="text-sm font-medium text-on-surface-variant leading-relaxed">
                   Are you sure you want to cancel the appointment for <span className="font-black text-on-surface">{getPatientName(appointmentToDelete?.patient_id)}</span>?
                 </p>
                 
                 <div className="mt-10 flex gap-4">
                   <button 
                     onClick={() => setIsDeleteModalOpen(false)}
-                    className="flex-1 py-4 bg-slate-50 rounded-2xl text-xs font-black uppercase tracking-widest text-slate-400 hover:bg-slate-100 transition-colors"
+                    className="flex-1 py-4 bg-surface rounded-2xl text-xs font-black uppercase tracking-widest text-slate-400 hover:bg-card-bg dark:bg-slate-800 transition-colors"
                   >
                     Keep It
                   </button>

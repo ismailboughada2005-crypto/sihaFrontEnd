@@ -65,7 +65,7 @@ const AdminDashboard = ({ patients, doctors, staff, appointments, setPatients, o
       <header className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h2 className="text-3xl font-black text-on-surface tracking-tight mb-1">Administrative Terminal</h2>
-          <p className="text-sm font-medium text-slate-500">Clinic-wide Performance & High-level Metrics</p>
+          <p className="text-sm font-medium text-on-surface-variant">Clinic-wide Performance & High-level Metrics</p>
         </div>
       </header>
       
@@ -76,7 +76,7 @@ const AdminDashboard = ({ patients, doctors, staff, appointments, setPatients, o
         <KPICard title="Appointments" value={appointments?.length || 0} icon={Calendar} color="bg-emerald-600" />
       </div>
 
-      <div className="w-[117rem] grid grid-cols-1 xl:grid-cols-12 gap-8">
+      <div className="w-[90rem] grid grid-cols-1 xl:grid-cols-12 gap-8">
         <div className="w-full xl:col-span-8 bg-card-bg p-8 rounded-[2.5rem] border border-card-border shadow-sm transition-all duration-500">
           <div className="flex justify-between items-center mb-10 px-2">
             <div>
@@ -103,11 +103,10 @@ const AdminDashboard = ({ patients, doctors, staff, appointments, setPatients, o
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="border-b border-slate-50">
+                <tr className="border-b border-card-border">
                   <th className="px-4 py-4 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Patient Profile</th>
                   <th className="px-4 py-4 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Date of Birth</th>
                   <th className="px-4 py-4 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Contact</th>
-                  <th className="px-4 py-4 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Dept. / Status</th>
                   <th className="px-4 py-4 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-right">Actions</th>
                 </tr>
               </thead>
@@ -122,7 +121,7 @@ const AdminDashboard = ({ patients, doctors, staff, appointments, setPatients, o
                   >
                     <td className="px-4 py-6">
                       <div className="flex items-center gap-4 text-left">
-                        <div className="h-10 w-10 bg-surface rounded-xl flex items-center justify-center font-bold text-xs text-slate-500 border border-card-border uppercase">
+                        <div className="h-10 w-10 bg-surface rounded-xl flex items-center justify-center font-bold text-xs text-on-surface-variant border border-card-border uppercase">
                           {patient.avatar || (patient.prenom?.[0] || '') + (patient.nom?.[0] || '')}
                         </div>
                         <div>
@@ -132,35 +131,20 @@ const AdminDashboard = ({ patients, doctors, staff, appointments, setPatients, o
                       </div>
                     </td>
                     <td className="px-4 py-6">
-                      <p className="text-xs font-bold text-slate-600">{patient.dob || 'N/A'}</p>
+                      <p className="text-xs font-bold text-on-surface-variant">{patient.dob || 'N/A'}</p>
                       <p className="text-[10px] text-slate-400 font-medium">{patient.dob ? (new Date().getFullYear() - new Date(patient.dob).getFullYear()) + ' years old' : ''}</p>
                     </td>
                     <td className="px-4 py-6">
                       <div className="flex flex-col gap-0.5">
-                        <p className="text-xs font-bold text-slate-600">{patient.email}</p>
+                        <p className="text-xs font-bold text-on-surface-variant">{patient.email}</p>
                         <p className="text-[10px] text-slate-400 font-medium">{patient.phone}</p>
-                      </div>
-                    </td>
-                    <td className="px-4 py-6">
-                      <div className="flex flex-col gap-2 italic">
-                        <p className="text-[10px] font-black text-primary uppercase tracking-tighter">{patient.dept}</p>
-                        <div className="flex">
-                          <span className={`px-2 py-0.5 rounded-md text-[8px] font-black uppercase tracking-widest ring-1 ${
-                            patient.status === 'Active' ? 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 ring-emerald-100 dark:ring-emerald-900/50' :
-                            patient.status === 'Waiting' ? 'bg-amber-50 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 ring-amber-100 dark:ring-amber-900/50' :
-                            patient.status === 'Billing' ? 'bg-sky-50 dark:bg-sky-900/30 text-sky-600 dark:text-sky-400 ring-sky-100 dark:ring-sky-900/50' :
-                            'bg-slate-50 dark:bg-slate-800 text-slate-500 dark:text-slate-400 ring-slate-100 dark:ring-slate-700'
-                          }`}>
-                            {patient.status}
-                          </span>
-                        </div>
                       </div>
                     </td>
                     <td className="px-4 py-6">
                       <div className="flex justify-end gap-2">
                         <button 
                           onClick={handleEdit}
-                          className="p-2 text-slate-400 hover:text-primary transition-colors hover:bg-slate-50 rounded-lg" 
+                          className="p-2 text-slate-400 hover:text-primary transition-colors hover:bg-surface rounded-lg" 
                           title="Edit Record"
                         >
                           <Edit2 className="w-4 h-4" />
@@ -175,7 +159,7 @@ const AdminDashboard = ({ patients, doctors, staff, appointments, setPatients, o
                         </button>
                         <button 
                           onClick={handleEdit}
-                          className="p-2 text-slate-300 hover:text-primary transition-colors hover:bg-primary/5 rounded-lg border border-transparent hover:border-slate-100" 
+                          className="p-2 text-slate-300 hover:text-primary transition-colors hover:bg-primary/5 rounded-lg border border-transparent hover:border-card-border" 
                           title="View Details"
                         >
                           <ChevronRight className="w-5 h-5" />

@@ -12,14 +12,14 @@ import api from "../../services/api";
 
 const StatCard = ({ label, value, sub, color, icon }) => (
   <div
-    className="bg-white rounded-2xl p-6 shadow-sm border-t-4 min-w-[220px] flex-1"
+    className="bg-card-bg rounded-2xl p-6 shadow-sm border-t-4 min-w-[220px] flex-1"
     style={{ borderTopColor: color }}
   >
     <div className="text-3xl mb-2">{icon}</div>
 
-    <div className="text-sm text-slate-500 mb-1">{label}</div>
+    <div className="text-sm text-on-surface-variant mb-1">{label}</div>
 
-    <div className="text-2xl font-bold text-slate-900">{value}</div>
+    <div className="text-2xl font-bold text-on-surface">{value}</div>
 
     {sub && <div className="text-xs text-slate-400 mt-1">{sub}</div>}
   </div>
@@ -28,14 +28,14 @@ const StatCard = ({ label, value, sub, color, icon }) => (
 const Bar = ({ label, value, max, color }) => (
   <div className="mb-4">
     <div className="flex items-center justify-between mb-1 text-sm">
-      <span className="text-slate-700">{label}</span>
+      <span className="text-on-surface-variant">{label}</span>
 
-      <span className="font-semibold text-slate-900">
+      <span className="font-semibold text-on-surface">
         {Number(value).toLocaleString()} MAD
       </span>
     </div>
 
-    <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+    <div className="w-full h-2 bg-card-bg dark:bg-slate-800 rounded-full overflow-hidden">
       <div
         className="h-full rounded-full transition-all duration-700"
         style={{
@@ -107,7 +107,7 @@ export default function PaymentsDashboard() {
   return (
     <div className="space-y-6">
       {/* KPI CARDS */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-58">
         <StatCard
           label="Daily Revenue"
           value={`${Number(stats?.daily_revenue || 0).toLocaleString()} MAD`}
@@ -143,9 +143,9 @@ export default function PaymentsDashboard() {
       {/* CHARTS */}
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
         {/* MONTHLY REVENUE */}
-        <div className="bg-white rounded-2xl p-6 shadow-sm">
+        <div className="bg-card-bg rounded-2xl p-6 shadow-sm">
           <div className="flex items-center justify-between mb-6">
-            <h3 className="text-lg font-bold text-slate-900">
+            <h3 className="text-lg font-bold text-on-surface">
               Monthly Revenue — {year}
             </h3>
 
@@ -181,9 +181,9 @@ export default function PaymentsDashboard() {
         </div>
 
         {/* PAYMENT METHODS */}
-        <div className="bg-white rounded-2xl p-6 shadow-sm">
+        <div className="bg-card-bg rounded-2xl p-6 shadow-sm">
           <div className="flex items-center justify-between mb-6">
-            <h3 className="text-lg font-bold text-slate-900">
+            <h3 className="text-lg font-bold text-on-surface">
               Revenue by Payment Method
             </h3>
 

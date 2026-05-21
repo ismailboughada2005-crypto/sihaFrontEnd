@@ -76,7 +76,7 @@ const DoctorAppointments = ({ appointments, stats, filters, setFilters, refreshD
       <header className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h2 className="text-3xl font-black text-on-surface tracking-tight mb-1">Appointment Management</h2>
-          <p className="text-sm font-medium text-slate-500">Manage your schedule and patient consultations</p>
+          <p className="text-sm font-medium text-on-surface-variant">Manage your schedule and patient consultations</p>
         </div>
       </header>
 
@@ -89,20 +89,20 @@ const DoctorAppointments = ({ appointments, stats, filters, setFilters, refreshD
       </div>
 
       {/* Filters & Search */}
-      <div className="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm flex flex-col md:flex-row gap-4 items-center">
+      <div className="bg-card-bg p-6 rounded-[2rem] border border-card-border shadow-sm flex flex-col md:flex-row gap-4 items-center">
         <div className="relative flex-1 w-full">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
           <input 
             type="text"
             placeholder="Search by patient name..."
-            className="w-full pl-12 pr-4 py-3 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold focus:ring-2 focus:ring-primary/20 transition-all outline-none"
+            className="w-full pl-12 pr-4 py-3 bg-surface border border-card-border rounded-2xl text-sm font-bold focus:ring-2 focus:ring-primary/20 transition-all outline-none"
             value={filters.search}
             onChange={(e) => setFilters({...filters, search: e.target.value})}
           />
         </div>
         <div className="flex gap-2 w-full md:w-auto">
           <select 
-            className="px-4 py-3 bg-slate-50 border border-slate-100 rounded-2xl text-xs font-bold uppercase tracking-wider outline-none"
+            className="px-4 py-3 bg-surface border border-card-border rounded-2xl text-xs font-bold uppercase tracking-wider outline-none"
             value={filters.date_filter}
             onChange={(e) => setFilters({...filters, date_filter: e.target.value})}
           >
@@ -111,7 +111,7 @@ const DoctorAppointments = ({ appointments, stats, filters, setFilters, refreshD
             <option value="upcoming">Upcoming</option>
           </select>
           <select 
-            className="px-4 py-3 bg-slate-50 border border-slate-100 rounded-2xl text-xs font-bold uppercase tracking-wider outline-none"
+            className="px-4 py-3 bg-surface border border-card-border rounded-2xl text-xs font-bold uppercase tracking-wider outline-none"
             value={filters.status}
             onChange={(e) => setFilters({...filters, status: e.target.value})}
           >
@@ -125,11 +125,11 @@ const DoctorAppointments = ({ appointments, stats, filters, setFilters, refreshD
       </div>
 
       {/* Appointment List */}
-      <div className="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden">
+      <div className="bg-card-bg rounded-[2.5rem] border border-card-border shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-slate-50">
+              <tr className="border-b border-card-border">
                 <th className="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Patient</th>
                 <th className="px-6 py-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Date & Time</th>
                 <th className="px-6 py-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Status</th>
@@ -137,14 +137,14 @@ const DoctorAppointments = ({ appointments, stats, filters, setFilters, refreshD
                 <th className="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-50">
+            <tbody className="divide-y divide-card-border">
               {appointments.length > 0 ? appointments.map((app, idx) => (
                 <motion.tr 
                   key={app.id}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: idx * 0.05 }}
-                  className="hover:bg-slate-50/50 transition-colors group"
+                  className="hover:bg-surface/50 transition-colors group"
                 >
                   <td className="px-8 py-5">
                     <div className="flex items-center gap-3">
@@ -175,7 +175,7 @@ const DoctorAppointments = ({ appointments, stats, filters, setFilters, refreshD
                     </span>
                   </td>
                   <td className="px-6 py-5">
-                    <p className="text-xs font-medium text-slate-500 max-w-[200px] truncate">
+                    <p className="text-xs font-medium text-on-surface-variant max-w-[200px] truncate">
                       {app.notes || <span className="italic text-slate-300">No notes</span>}
                     </p>
                   </td>
@@ -224,7 +224,7 @@ const DoctorAppointments = ({ appointments, stats, filters, setFilters, refreshD
                 <tr>
                   <td colSpan="5" className="px-8 py-12 text-center">
                     <div className="flex flex-col items-center gap-3">
-                      <div className="w-16 h-16 bg-slate-50 rounded-[2rem] flex items-center justify-center text-slate-200">
+                      <div className="w-16 h-16 bg-surface rounded-[2rem] flex items-center justify-center text-slate-200">
                         <Calendar className="w-8 h-8" />
                       </div>
                       <p className="text-sm font-bold text-slate-400">No appointments found</p>
@@ -245,7 +245,7 @@ const DoctorAppointments = ({ appointments, stats, filters, setFilters, refreshD
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="bg-white w-full max-w-md rounded-[2.5rem] shadow-2xl border border-slate-100 overflow-hidden"
+              className="bg-card-bg w-full max-w-md rounded-[2.5rem] shadow-2xl border border-card-border overflow-hidden"
             >
               <div className="p-8">
                 <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 ${
@@ -259,7 +259,7 @@ const DoctorAppointments = ({ appointments, stats, filters, setFilters, refreshD
                    modalType === 'cancel' ? 'Cancel Appointment' : 
                    'Complete Appointment'}
                 </h3>
-                <p className="text-slate-500 font-medium mb-6">
+                <p className="text-on-surface-variant font-medium mb-6">
                   {modalType === 'confirm' ? 'Are you sure you want to confirm this appointment with ' : 
                    modalType === 'cancel' ? 'Please provide a reason for cancelling the appointment with ' : 
                    'Add any final clinical notes for '}
@@ -270,7 +270,7 @@ const DoctorAppointments = ({ appointments, stats, filters, setFilters, refreshD
 
                 {(modalType === 'cancel' || modalType === 'complete') && (
                   <textarea 
-                    className="w-full p-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold focus:ring-2 focus:ring-primary/20 transition-all outline-none mb-6 min-h-[100px]"
+                    className="w-full p-4 bg-surface border border-card-border rounded-2xl text-sm font-bold focus:ring-2 focus:ring-primary/20 transition-all outline-none mb-6 min-h-[100px]"
                     placeholder={modalType === 'cancel' ? "Reason for cancellation..." : "Clinical notes..."}
                     value={reason}
                     onChange={(e) => setReason(e.target.value)}
@@ -280,7 +280,7 @@ const DoctorAppointments = ({ appointments, stats, filters, setFilters, refreshD
                 <div className="flex gap-3">
                   <button 
                     onClick={() => { setModalType(null); setSelectedAppointment(null); setReason(''); }}
-                    className="flex-1 py-4 bg-slate-50 text-slate-400 rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-slate-100 transition-all"
+                    className="flex-1 py-4 bg-surface text-slate-400 rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-card-bg dark:bg-slate-800 transition-all"
                   >
                     Go Back
                   </button>

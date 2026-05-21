@@ -62,7 +62,7 @@ const AnalyticsPage = ({ patients, doctors, appointments }) => {
     <div className="p-8 space-y-8 animate-in fade-in duration-700">
       <header>
         <h2 className="text-3xl font-black text-on-surface tracking-tight mb-1">Clinical Analytics</h2>
-        <p className="text-sm font-medium text-slate-500">Performance metrics and patient demographic insights</p>
+        <p className="text-sm font-medium text-on-surface-variant">Performance metrics and patient demographic insights</p>
       </header>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -72,10 +72,10 @@ const AnalyticsPage = ({ patients, doctors, appointments }) => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.1 }}
-            className="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm"
+            className="bg-card-bg p-6 rounded-[2rem] border border-card-border shadow-sm"
           >
             <div className="flex items-center justify-between mb-4">
-              <div className="p-3 bg-slate-50 rounded-2xl text-primary">
+              <div className="p-3 bg-surface rounded-2xl text-primary">
                 <stat.icon className="w-5 h-5" />
               </div>
               <div className={`flex items-center gap-1 text-[10px] font-black px-2 py-1 rounded-lg ${stat.isUp ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-600'}`}>
@@ -90,7 +90,7 @@ const AnalyticsPage = ({ patients, doctors, appointments }) => {
       </div>
 
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
-        <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm">
+        <div className="bg-card-bg p-8 rounded-[2.5rem] border border-card-border shadow-sm">
           <div className="flex items-center justify-between mb-8">
             <div>
               <h3 className="text-lg font-black text-on-surface tracking-tight">Patient Traffic</h3>
@@ -99,11 +99,11 @@ const AnalyticsPage = ({ patients, doctors, appointments }) => {
             <div className="flex gap-4">
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 bg-indigo-500 rounded-full" />
-                <span className="text-[10px] font-black text-slate-500 uppercase">Patients</span>
+                <span className="text-[10px] font-black text-on-surface-variant uppercase">Patients</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 bg-emerald-500 rounded-full" />
-                <span className="text-[10px] font-black text-slate-500 uppercase">Bookings</span>
+                <span className="text-[10px] font-black text-on-surface-variant uppercase">Bookings</span>
               </div>
             </div>
           </div>
@@ -135,7 +135,7 @@ const AnalyticsPage = ({ patients, doctors, appointments }) => {
           </div>
         </div>
 
-        <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm">
+        <div className="bg-card-bg p-8 rounded-[2.5rem] border border-card-border shadow-sm">
           <div className="mb-8">
             <h3 className="text-lg font-black text-on-surface tracking-tight">Department Utilization</h3>
             <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">Specialization Load Distribution</p>
@@ -190,7 +190,7 @@ const AnalyticsPage = ({ patients, doctors, appointments }) => {
                 initial={{ height: 0 }}
                 animate={{ height: `${h}%` }}
                 transition={{ delay: i * 0.1 + 0.5, type: 'spring' }}
-                className="w-8 bg-white/10 rounded-t-xl relative group"
+                className="w-8 bg-card-bg/10 rounded-t-xl relative group"
               >
                 <div className="absolute inset-0 bg-primary opacity-0 group-hover:opacity-100 transition-opacity rounded-t-xl" />
               </motion.div>

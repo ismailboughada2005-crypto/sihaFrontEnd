@@ -107,7 +107,7 @@ const StaffDirectory = ({ staff, setStaff }) => {
       <header className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h2 className="text-3xl font-black text-on-surface tracking-tight mb-1">Clinic Operations Staff</h2>
-          <p className="text-sm font-medium text-slate-500">Manage non-clinical personnel and administrative roles</p>
+          <p className="text-sm font-medium text-on-surface-variant">Manage non-clinical personnel and administrative roles</p>
         </div>
         <div className="flex gap-3">
           <button 
@@ -120,14 +120,14 @@ const StaffDirectory = ({ staff, setStaff }) => {
         </div>
       </header>
 
-      <div className="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden">
-        <div className="p-8 border-b border-slate-50 flex items-center justify-between gap-4">
+      <div className="bg-card-bg rounded-[2.5rem] border border-card-border shadow-sm overflow-hidden">
+        <div className="p-8 border-b border-card-border flex items-center justify-between gap-4">
            <div className="relative group flex-1 max-w-md">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-emerald-500 transition-colors" />
             <input 
               type="text" 
               placeholder="Search by name or role..." 
-              className="bg-slate-50 border-none rounded-2xl w-full py-3 pl-12 pr-4 text-sm focus:ring-2 focus:ring-emerald-500/20 transition-all outline-none font-medium h-12"
+              className="bg-surface border-none rounded-2xl w-full py-3 pl-12 pr-4 text-sm focus:ring-2 focus:ring-emerald-500/20 transition-all outline-none font-medium h-12"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -138,13 +138,13 @@ const StaffDirectory = ({ staff, setStaff }) => {
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-slate-50">
+              <tr className="border-b border-card-border">
                 <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Personnel</th>
                 <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Email</th>
                 <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-right">Settings</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-50 text-sm">
+            <tbody className="divide-y divide-card-border text-sm">
               <AnimatePresence>
                 {filteredStaff.map((member, i) => (
                   <motion.tr 
@@ -153,7 +153,7 @@ const StaffDirectory = ({ staff, setStaff }) => {
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, scale: 0.95 }}
                     transition={{ delay: i * 0.05 }}
-                    className="group hover:bg-slate-50/50 transition-colors"
+                    className="group hover:bg-surface/50 transition-colors"
                   >
                     <td className="px-8 py-6">
                       <div className="flex items-center gap-4">
@@ -167,7 +167,7 @@ const StaffDirectory = ({ staff, setStaff }) => {
                       </div>
                     </td>
                     <td className="px-8 py-6">
-                       <span className="text-xs font-medium text-slate-500">{member.email}</span>
+                       <span className="text-xs font-medium text-on-surface-variant">{member.email}</span>
                     </td>
                     <td className="px-8 py-6">
                       <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -188,25 +188,25 @@ const StaffDirectory = ({ staff, setStaff }) => {
         {isModalOpen && (
           <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setIsModalOpen(false)} className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" />
-            <motion.div initial={{ opacity: 0, scale: 0.9, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.9, y: 20 }} className="relative w-full max-w-xl bg-white rounded-[2.5rem] shadow-2xl p-10 overflow-hidden">
+            <motion.div initial={{ opacity: 0, scale: 0.9, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.9, y: 20 }} className="relative w-full max-w-xl bg-card-bg rounded-[2.5rem] shadow-2xl p-10 overflow-hidden">
                <h3 className="text-xl font-black text-on-surface mb-8">
                  {editingMember ? 'Update Staff Member' : 'New System Personnel'}
                </h3>
                <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="space-y-2">
                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Nom Complet</label>
-                    <input required type="text" className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 px-5 text-sm font-bold outline-none" value={formData.nom} onChange={(e) => setFormData({...formData, nom: e.target.value})} />
+                    <input required type="text" className="w-full bg-surface border border-card-border rounded-2xl py-4 px-5 text-sm font-bold outline-none" value={formData.nom} onChange={(e) => setFormData({...formData, nom: e.target.value})} />
                   </div>
                   <div className="space-y-2">
                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Email</label>
-                    <input required type="email" placeholder="Work Email" className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 px-5 text-sm font-bold outline-none" value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} />
+                    <input required type="email" placeholder="Work Email" className="w-full bg-surface border border-card-border rounded-2xl py-4 px-5 text-sm font-bold outline-none" value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} />
                   </div>
                   <div className="space-y-2">
                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Mot de Passe</label>
-                    <input required type="password" placeholder="Passphrase" className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 px-5 text-sm font-bold outline-none" value={formData.motDePasse} onChange={(e) => setFormData({...formData, motDePasse: e.target.value})} />
+                    <input required type="password" placeholder="Passphrase" className="w-full bg-surface border border-card-border rounded-2xl py-4 px-5 text-sm font-bold outline-none" value={formData.motDePasse} onChange={(e) => setFormData({...formData, motDePasse: e.target.value})} />
                   </div>
                   <div className="pt-4 flex gap-4">
-                    <button type="button" onClick={() => setIsModalOpen(false)} className="flex-1 py-4 bg-slate-50 rounded-2xl text-xs font-black uppercase text-slate-400">Cancel</button>
+                    <button type="button" onClick={() => setIsModalOpen(false)} className="flex-1 py-4 bg-surface rounded-2xl text-xs font-black uppercase text-slate-400">Cancel</button>
                     <button 
                       type="submit" 
                       disabled={loading}
@@ -226,12 +226,12 @@ const StaffDirectory = ({ staff, setStaff }) => {
         {isDeleteModalOpen && (
           <div className="fixed inset-0 z-[110] flex items-center justify-center p-4">
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setIsDeleteModalOpen(false)} className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" />
-            <motion.div initial={{ opacity: 0, scale: 0.9, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.9, y: 20 }} className="relative w-full max-w-md bg-white rounded-[2.5rem] p-10 text-center shadow-2xl">
+            <motion.div initial={{ opacity: 0, scale: 0.9, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.9, y: 20 }} className="relative w-full max-w-md bg-card-bg rounded-[2.5rem] p-10 text-center shadow-2xl">
               <div className="w-20 h-20 bg-rose-50 rounded-full flex items-center justify-center mx-auto mb-6 text-rose-500"><Trash2 className="w-10 h-10" /></div>
               <h3 className="text-2xl font-black text-on-surface mb-2">Offboard Member?</h3>
-              <p className="text-sm font-medium text-slate-500">Terminating <span className="font-black text-on-surface">{memberToDelete?.nom}</span>'s record will revoke all operational clearance.</p>
+              <p className="text-sm font-medium text-on-surface-variant">Terminating <span className="font-black text-on-surface">{memberToDelete?.nom}</span>'s record will revoke all operational clearance.</p>
                 <div className="mt-10 flex gap-4">
-                <button onClick={() => setIsDeleteModalOpen(false)} className="flex-1 py-4 bg-slate-50 rounded-2xl text-xs font-black uppercase text-slate-400 tracking-widest">Cancel</button>
+                <button onClick={() => setIsDeleteModalOpen(false)} className="flex-1 py-4 bg-surface rounded-2xl text-xs font-black uppercase text-slate-400 tracking-widest">Cancel</button>
                 <button 
                   onClick={handleDelete} 
                   disabled={loading}

@@ -171,10 +171,10 @@ const PaymentManagement = ({ patients = [] }) => {
       <header className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h2 className="text-3xl font-black text-on-surface tracking-tight mb-1">Financial Terminal</h2>
-          <p className="text-sm font-medium text-slate-500">Global billing coordination and revenue tracking</p>
+          <p className="text-sm font-medium text-on-surface-variant">Global billing coordination and revenue tracking</p>
         </div>
         <div className="flex gap-3">
-          <button className="px-5 py-2.5 bg-white border border-slate-200 rounded-2xl text-xs font-bold uppercase tracking-widest hover:border-primary hover:text-primary transition-all flex items-center gap-2">
+          <button className="px-5 py-2.5 bg-card-bg border border-slate-200 rounded-2xl text-xs font-bold uppercase tracking-widest hover:border-primary hover:text-primary transition-all flex items-center gap-2">
             <Download className="w-4 h-4" /> Export Financials
           </button>
           <button
@@ -193,7 +193,7 @@ const PaymentManagement = ({ patients = [] }) => {
       </div>
 
       <div className="bg-card-bg rounded-[2.5rem] border border-card-border shadow-sm overflow-hidden transition-all duration-500">
-        <div className="p-8 border-b border-card-border flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-50/20 dark:bg-slate-800/20">
+        <div className="p-8 border-b border-card-border flex flex-col md:flex-row md:items-center justify-between gap-4 bg-surface/20 dark:bg-slate-800/20">
           <div className="relative group flex-1 max-w-md">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-primary transition-colors" />
             <input 
@@ -217,7 +217,7 @@ const PaymentManagement = ({ patients = [] }) => {
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-slate-50">
+              <tr className="border-b border-card-border">
                 <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Transaction</th>
                 <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Patient Details</th>
                 <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Amount</th>
@@ -226,7 +226,7 @@ const PaymentManagement = ({ patients = [] }) => {
                 <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-50">
+            <tbody className="divide-y divide-card-border">
               <AnimatePresence>
                 {filteredPayments.map((pay, i) => (
                   <motion.tr 
@@ -235,7 +235,7 @@ const PaymentManagement = ({ patients = [] }) => {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.95 }}
                     transition={{ delay: i * 0.05 }}
-                    className="group hover:bg-slate-50/50 transition-colors"
+                    className="group hover:bg-surface/50 transition-colors"
                   >
                     <td className="px-8 py-6">
                       <div>
@@ -260,7 +260,7 @@ const PaymentManagement = ({ patients = [] }) => {
                     <td className="px-8 py-6">
                       <div className="flex items-center gap-2">
                         {pay.payment_method === 'Credit Card' ? <CreditCard className="w-4 h-4 text-slate-300" /> : <Banknote className="w-4 h-4 text-slate-300" />}
-                        <span className="text-xs font-bold text-slate-600">{pay.payment_method}</span>
+                        <span className="text-xs font-bold text-on-surface-variant">{pay.payment_method}</span>
                       </div>
                     </td>
                     <td className="px-8 py-6">
@@ -297,7 +297,7 @@ const PaymentManagement = ({ patients = [] }) => {
           </table>
           {filteredPayments.length === 0 && (
             <div className="py-24 text-center">
-              <div className="inline-flex p-6 bg-slate-50 rounded-full mb-6">
+              <div className="inline-flex p-6 bg-surface rounded-full mb-6">
                 <DollarSign className="w-12 h-12 text-slate-200" />
               </div>
               <h3 className="text-lg font-black text-on-surface">No Transactions Recorded</h3>
@@ -312,7 +312,7 @@ const PaymentManagement = ({ patients = [] }) => {
           <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setIsModalOpen(false)} className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" />
             <motion.div initial={{ opacity: 0, scale: 0.9, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.9, y: 20 }} className="relative w-full max-w-xl bg-card-bg rounded-[2.5rem] shadow-2xl overflow-hidden border border-card-border">
-              <div className="p-8 border-b border-card-border flex justify-between items-center bg-slate-50/50 dark:bg-slate-800/10">
+              <div className="p-8 border-b border-card-border flex justify-between items-center bg-surface/50 dark:bg-slate-800/10">
                 <div>
                   <h3 className="text-xl font-black text-on-surface tracking-tight">{editingPayment ? 'Modify Transaction' : 'Record New Payment'}</h3>
                   <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">Financial Reconciliation</p>
@@ -328,7 +328,7 @@ const PaymentManagement = ({ patients = [] }) => {
                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Patient</label>
                     <select 
                       required
-                      className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 px-5 text-sm font-bold focus:ring-2 focus:ring-primary/20 transition-all outline-none appearance-none"
+                      className="w-full bg-surface border border-card-border rounded-2xl py-4 px-5 text-sm font-bold focus:ring-2 focus:ring-primary/20 transition-all outline-none appearance-none"
                       value={formData.patient_id}
                       onChange={(e) => setFormData({...formData, patient_id: e.target.value})}
                     >
@@ -342,7 +342,7 @@ const PaymentManagement = ({ patients = [] }) => {
                     <input 
                       required type="number" step="0.01"
                       placeholder="0.00"
-                      className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 px-5 text-sm font-bold focus:ring-2 focus:ring-primary/20 transition-all outline-none"
+                      className="w-full bg-surface border border-card-border rounded-2xl py-4 px-5 text-sm font-bold focus:ring-2 focus:ring-primary/20 transition-all outline-none"
                       value={formData.amount}
                       onChange={(e) => setFormData({...formData, amount: e.target.value})}
                     />
@@ -352,7 +352,7 @@ const PaymentManagement = ({ patients = [] }) => {
                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Payment Date</label>
                     <input 
                       required type="date" 
-                      className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 px-5 text-sm font-bold focus:ring-2 focus:ring-primary/20 transition-all outline-none"
+                      className="w-full bg-surface border border-card-border rounded-2xl py-4 px-5 text-sm font-bold focus:ring-2 focus:ring-primary/20 transition-all outline-none"
                       value={formData.payment_date}
                       onChange={(e) => setFormData({...formData, payment_date: e.target.value})}
                     />
@@ -361,7 +361,7 @@ const PaymentManagement = ({ patients = [] }) => {
                   <div className="space-y-2">
                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Method</label>
                     <select 
-                      className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 px-5 text-sm font-bold focus:ring-2 focus:ring-primary/20 transition-all outline-none appearance-none"
+                      className="w-full bg-surface border border-card-border rounded-2xl py-4 px-5 text-sm font-bold focus:ring-2 focus:ring-primary/20 transition-all outline-none appearance-none"
                       value={formData.payment_method}
                       onChange={(e) => setFormData({...formData, payment_method: e.target.value})}
                     >
@@ -375,7 +375,7 @@ const PaymentManagement = ({ patients = [] }) => {
                   <div className="space-y-2">
                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Status</label>
                     <select 
-                      className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 px-5 text-sm font-bold focus:ring-2 focus:ring-primary/20 transition-all outline-none appearance-none"
+                      className="w-full bg-surface border border-card-border rounded-2xl py-4 px-5 text-sm font-bold focus:ring-2 focus:ring-primary/20 transition-all outline-none appearance-none"
                       value={formData.status}
                       onChange={(e) => setFormData({...formData, status: e.target.value})}
                     >
@@ -388,7 +388,7 @@ const PaymentManagement = ({ patients = [] }) => {
                   <div className="col-span-2 space-y-2">
                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Notes</label>
                     <textarea 
-                      className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 px-5 text-sm font-bold focus:ring-2 focus:ring-primary/20 transition-all outline-none min-h-[100px]"
+                      className="w-full bg-surface border border-card-border rounded-2xl py-4 px-5 text-sm font-bold focus:ring-2 focus:ring-primary/20 transition-all outline-none min-h-[100px]"
                       placeholder="Transaction details, reference numbers..."
                       value={formData.notes}
                       onChange={(e) => setFormData({...formData, notes: e.target.value})}
@@ -397,7 +397,7 @@ const PaymentManagement = ({ patients = [] }) => {
                 </div>
 
                 <div className="pt-8 flex gap-4">
-                  <button type="button" onClick={() => setIsModalOpen(false)} className="flex-1 py-4 bg-slate-50 rounded-2xl text-xs font-black uppercase tracking-widest text-slate-400 hover:bg-slate-100 transition-colors">Discard</button>
+                  <button type="button" onClick={() => setIsModalOpen(false)} className="flex-1 py-4 bg-surface rounded-2xl text-xs font-black uppercase tracking-widest text-slate-400 hover:bg-card-bg dark:bg-slate-800 transition-colors">Discard</button>
                   <button type="submit" className="flex-1 py-4 bg-primary text-white rounded-2xl text-xs font-black uppercase tracking-widest shadow-lg shadow-primary/20 hover:scale-[1.02] transition-all">
                     {editingPayment ? 'Update Ledger' : 'Post Transaction'}
                   </button>
@@ -412,16 +412,16 @@ const PaymentManagement = ({ patients = [] }) => {
         {isDeleteModalOpen && (
           <div className="fixed inset-0 z-[110] flex items-center justify-center p-4">
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setIsDeleteModalOpen(false)} className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" />
-            <motion.div initial={{ opacity: 0, scale: 0.9, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.9, y: 20 }} className="relative w-full max-w-md bg-white rounded-[2.5rem] shadow-2xl p-10 overflow-hidden text-center">
+            <motion.div initial={{ opacity: 0, scale: 0.9, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.9, y: 20 }} className="relative w-full max-w-md bg-card-bg rounded-[2.5rem] shadow-2xl p-10 overflow-hidden text-center">
               <div className="w-20 h-20 bg-rose-50 rounded-full flex items-center justify-center mx-auto mb-6 text-rose-500">
                 <Trash2 className="w-10 h-10" />
               </div>
               <h3 className="text-2xl font-black text-on-surface tracking-tight mb-2">Revert Transaction?</h3>
-              <p className="text-sm font-medium text-slate-500 leading-relaxed">
+              <p className="text-sm font-medium text-on-surface-variant leading-relaxed">
                 Are you sure you want to remove this payment record for <span className="font-black text-on-surface">{getPatientName(paymentToDelete?.patient_id)}</span>? This cannot be undone.
               </p>
               <div className="mt-10 flex gap-4">
-                <button onClick={() => setIsDeleteModalOpen(false)} className="flex-1 py-4 bg-slate-50 rounded-2xl text-xs font-black uppercase tracking-widest text-slate-400 hover:bg-slate-100 transition-colors">Cancel</button>
+                <button onClick={() => setIsDeleteModalOpen(false)} className="flex-1 py-4 bg-surface rounded-2xl text-xs font-black uppercase tracking-widest text-slate-400 hover:bg-card-bg dark:bg-slate-800 transition-colors">Cancel</button>
                 <button onClick={handleDelete} className="flex-1 py-4 bg-rose-500 text-white rounded-2xl text-xs font-black uppercase tracking-widest shadow-lg shadow-rose-200 hover:bg-rose-600 transition-all">Revert Now</button>
               </div>
             </motion.div>

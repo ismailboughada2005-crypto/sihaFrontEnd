@@ -7,8 +7,10 @@ import api from '../services/api';
 import Cookies from 'js-cookie';
 import Logo from '../images/logo.png';
 import Image from "next/image";
+import { useTranslation } from '../contexts/LanguageContext';
 
 const LoginPage = ({ onLogin }) => {
+  const { t, language, changeLanguage } = useTranslation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -33,27 +35,40 @@ const LoginPage = ({ onLogin }) => {
       
       onLogin(user);
     } catch (err) {
-      setError(err.response?.data?.message || 'Authentication failed. Please check your credentials.');
+      setError(err.response?.data?.message || t('invalidCredentials'));
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-6">
+    <div className="min-h-screen bg-surface flex items-center justify-center p-6">
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="w-full max-w-md bg-white rounded-[2.5rem] shadow-2xl shadow-slate-200/50 p-12 overflow-hidden relative"
+        className="w-full max-w-md bg-card-bg rounded-[2.5rem] shadow-2xl shadow-slate-200/50 p-12 overflow-hidden relative"
       >
         <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-primary via-indigo-500 to-purple-500" />
         
+        {/* Language switcher button */}
+        <div className="absolute top-6 right-8">
+          <button
+            type="button"
+            onClick={() => changeLanguage(language === 'en' ? 'fr' : 'en')}
+            className="px-2.5 py-1.5 bg-surface border border-card-border rounded-xl text-[9px] font-black text-on-surface-variant hover:text-primary hover:bg-primary/5 transition-all uppercase tracking-wider"
+          >
+            {language === 'en' ? 'EN' : 'FR'}
+          </button>
+        </div>
+
         <div className="text-center mb-10">
           <div className="w-20 h-20 bg-primary/10 rounded-3xl flex items-center justify-center mx-auto mb-6 text-primary rotate-3 hover:rotate-0 transition-transform">
             <Image src={Logo} alt="siha clinic" className=' '/>
           </div>
-          <h1 className="text-3xl font-black text-slate-900 tracking-tight uppercase">siha</h1>
-          <p className="text-sm font-bold text-slate-400 uppercase tracking-widest mt-2">Unified Access Portal</p>
+          <h1 className="text-3xl font-black text-on-surface tracking-tight uppercase">siha</h1>
+          <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-2">
+            {language === 'en' ? 'Unified Access Portal' : 'Portail d\'Accès Unifié'}
+          </p>
         </div>
 
         {error && (
@@ -68,14 +83,14 @@ const LoginPage = ({ onLogin }) => {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
-            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Professional Email</label>
+            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">{t('email')}</label>
             <div className="relative">
               <Mail className="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
               <input 
                 required
                 type="email"
                 placeholder="name@siha.com"
-                className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 pl-14 pr-5 text-sm font-bold outline-none focus:ring-2 focus:ring-primary/20 transition-all"
+                className="w-full bg-surface border border-card-border rounded-2xl py-4 pl-14 pr-5 text-sm font-bold outline-none focus:ring-2 focus:ring-primary/20 transition-all"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
@@ -83,14 +98,14 @@ const LoginPage = ({ onLogin }) => {
           </div>
 
           <div className="space-y-2">
-            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Secure Password</label>
+            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">{t('password')}</label>
             <div className="relative">
               <Lock className="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
               <input 
                 required
                 type="password"
                 placeholder="••••••••"
-                className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 pl-14 pr-5 text-sm font-bold outline-none focus:ring-2 focus:ring-primary/20 transition-all"
+                className="w-full bg-surface border border-card-border rounded-2xl py-4 pl-14 pr-5 text-sm font-bold outline-none focus:ring-2 focus:ring-primary/20 transition-all"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
@@ -107,24 +122,24 @@ const LoginPage = ({ onLogin }) => {
             ) : (
               <>
                 <LogIn className="w-5 h-5" />
-                Authenticate Account
+                {t('signIn')}
               </>
             )}
           </button>
         </form>
 
-        <div className="mt-12 pt-8 border-t border-slate-50 grid grid-cols-3 gap-4 opacity-40 grayscale group hover:opacity-100 hover:grayscale-0 transition-all">
+        <div className="mt-12 pt-8 border-t border-card-border grid grid-cols-3 gap-4 opacity-40 grayscale group hover:opacity-100 hover:grayscale-0 transition-all">
           <div className="flex flex-col items-center gap-1">
             <ShieldCheck className="w-5 h-5 text-indigo-500" />
-            <span className="text-[8px] font-black uppercase tracking-tighter">Admin</span>
+            <span className="text-[8px] font-black uppercase tracking-tighter">{t('admin')}</span>
           </div>
           <div className="flex flex-col items-center gap-1">
             <Stethoscope className="w-5 h-5 text-rose-500" />
-            <span className="text-[8px] font-black uppercase tracking-tighter">Medical</span>
+            <span className="text-[8px] font-black uppercase tracking-tighter">{t('doctor')}</span>
           </div>
           <div className="flex flex-col items-center gap-1">
             <UserCog className="w-5 h-5 text-emerald-500" />
-            <span className="text-[8px] font-black uppercase tracking-tighter">Staff</span>
+            <span className="text-[8px] font-black uppercase tracking-tighter">{t('staff')}</span>
           </div>
         </div>
       </motion.div>

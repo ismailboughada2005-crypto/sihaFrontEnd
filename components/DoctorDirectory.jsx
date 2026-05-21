@@ -111,7 +111,7 @@ const DoctorDirectory = ({ doctors, setDoctors }) => {
       <header className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h2 className="text-3xl font-black text-on-surface tracking-tight mb-1">Medical Staff</h2>
-          <p className="text-sm font-medium text-slate-500">Manage physician credentials and department assignments</p>
+          <p className="text-sm font-medium text-on-surface-variant">Manage physician credentials and department assignments</p>
         </div>
         <div className="flex gap-3">
           <button 
@@ -124,14 +124,14 @@ const DoctorDirectory = ({ doctors, setDoctors }) => {
         </div>
       </header>
 
-      <div className="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden">
-        <div className="p-8 border-b border-slate-50 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-card-bg rounded-[2.5rem] border border-card-border shadow-sm overflow-hidden">
+        <div className="p-8 border-b border-card-border flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="relative group flex-1 max-w-md">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-primary transition-colors" />
             <input 
               type="text" 
               placeholder="Filter by name or specialty..." 
-              className="bg-slate-50 border-none rounded-2xl w-full py-3 pl-12 pr-4 text-sm focus:ring-2 focus:ring-primary/20 transition-all outline-none font-medium h-12"
+              className="bg-surface border-none rounded-2xl w-full py-3 pl-12 pr-4 text-sm focus:ring-2 focus:ring-primary/20 transition-all outline-none font-medium h-12"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -150,7 +150,7 @@ const DoctorDirectory = ({ doctors, setDoctors }) => {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ delay: i * 0.05 }}
-                className="bg-white border border-slate-100 rounded-[2rem] p-6 hover:shadow-xl hover:shadow-slate-200/50 transition-all group relative"
+                className="bg-card-bg border border-card-border rounded-[2rem] p-6 hover:shadow-xl hover:shadow-slate-200/50 transition-all group relative"
               >
                 <div className="flex justify-between items-start mb-6">
                   <div className="relative">
@@ -182,7 +182,7 @@ const DoctorDirectory = ({ doctors, setDoctors }) => {
                     </div>
                   </div>
 
-                  <div className="pt-4 border-t border-slate-50 flex justify-between items-center">
+                  <div className="pt-4 border-t border-card-border flex justify-between items-center">
                     <span className="text-[10px] font-black text-slate-300 uppercase tracking-widest">ID: {doctor.id}</span>
                   </div>
                 </div>
@@ -193,7 +193,7 @@ const DoctorDirectory = ({ doctors, setDoctors }) => {
 
         {filteredDoctors.length === 0 && (
           <div className="py-24 text-center">
-            <div className="inline-flex p-6 bg-slate-50 rounded-full mb-6">
+            <div className="inline-flex p-6 bg-surface rounded-full mb-6">
               <Stethoscope className="w-12 h-12 text-slate-200" />
             </div>
             <h3 className="text-lg font-black text-on-surface">No Specialists Found</h3>
@@ -218,16 +218,16 @@ const DoctorDirectory = ({ doctors, setDoctors }) => {
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="relative w-full max-w-xl bg-white rounded-[2.5rem] shadow-2xl overflow-hidden"
+              className="relative w-full max-w-xl bg-card-bg rounded-[2.5rem] shadow-2xl overflow-hidden"
             >
-              <div className="p-8 border-b border-slate-50 flex justify-between items-center bg-slate-50/50">
+              <div className="p-8 border-b border-card-border flex justify-between items-center bg-surface/50">
                 <div>
                   <h3 className="text-xl font-black text-on-surface tracking-tight">
                     {editingDoctor ? 'Update Physician Profile' : 'New Doctor Registration'}
                   </h3>
                   <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">Credential Management</p>
                 </div>
-                <button onClick={() => setIsModalOpen(false)} className="p-3 rounded-2xl bg-white shadow-sm border border-slate-100">
+                <button onClick={() => setIsModalOpen(false)} className="p-3 rounded-2xl bg-card-bg shadow-sm border border-card-border">
                   <X className="w-5 h-5 text-slate-400" />
                 </button>
               </div>
@@ -240,7 +240,7 @@ const DoctorDirectory = ({ doctors, setDoctors }) => {
                       required
                       type="text" 
                       placeholder="e.g. Dr. Sarah Mitchell"
-                      className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 px-5 text-sm font-bold outline-none"
+                      className="w-full bg-surface border border-card-border rounded-2xl py-4 px-5 text-sm font-bold outline-none"
                       value={formData.nom}
                       onChange={(e) => setFormData({...formData, nom: e.target.value})}
                     />
@@ -249,7 +249,7 @@ const DoctorDirectory = ({ doctors, setDoctors }) => {
                   <div className="space-y-2 col-span-2">
                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Spécialité</label>
                     <select 
-                      className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 px-5 text-sm font-bold outline-none appearance-none"
+                      className="w-full bg-surface border border-card-border rounded-2xl py-4 px-5 text-sm font-bold outline-none appearance-none"
                       value={formData.specialite}
                       onChange={(e) => setFormData({...formData, specialite: e.target.value})}
                     >
@@ -266,7 +266,7 @@ const DoctorDirectory = ({ doctors, setDoctors }) => {
                     <input 
                       required
                       type="email" 
-                      className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 px-5 text-sm font-bold outline-none"
+                      className="w-full bg-surface border border-card-border rounded-2xl py-4 px-5 text-sm font-bold outline-none"
                       value={formData.email}
                       onChange={(e) => setFormData({...formData, email: e.target.value})}
                     />
@@ -278,7 +278,7 @@ const DoctorDirectory = ({ doctors, setDoctors }) => {
                       required
                       type="password" 
                       placeholder="Security Credentials"
-                      className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 px-5 text-sm font-bold outline-none"
+                      className="w-full bg-surface border border-card-border rounded-2xl py-4 px-5 text-sm font-bold outline-none"
                       value={formData.motDePasse}
                       onChange={(e) => setFormData({...formData, motDePasse: e.target.value})}
                     />
@@ -286,7 +286,7 @@ const DoctorDirectory = ({ doctors, setDoctors }) => {
                 </div>
 
                 <div className="pt-8 flex gap-4">
-                  <button type="button" onClick={() => setIsModalOpen(false)} className="flex-1 py-4 bg-slate-50 rounded-2xl text-xs font-black uppercase tracking-widest text-slate-400">Cancel</button>
+                  <button type="button" onClick={() => setIsModalOpen(false)} className="flex-1 py-4 bg-surface rounded-2xl text-xs font-black uppercase tracking-widest text-slate-400">Cancel</button>
                   <button 
                     type="submit" 
                     disabled={loading}
@@ -306,12 +306,12 @@ const DoctorDirectory = ({ doctors, setDoctors }) => {
         {isDeleteModalOpen && (
           <div className="fixed inset-0 z-[110] flex items-center justify-center p-4">
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setIsDeleteModalOpen(false)} className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" />
-            <motion.div initial={{ opacity: 0, scale: 0.9, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.9, y: 20 }} className="relative w-full max-w-md bg-white rounded-[2.5rem] p-10 text-center">
+            <motion.div initial={{ opacity: 0, scale: 0.9, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.9, y: 20 }} className="relative w-full max-w-md bg-card-bg rounded-[2.5rem] p-10 text-center">
               <div className="w-20 h-20 bg-rose-50 rounded-full flex items-center justify-center mx-auto mb-6 text-rose-500"><Trash2 className="w-10 h-10" /></div>
               <h3 className="text-2xl font-black text-on-surface tracking-tight mb-2">Remove Specialist?</h3>
-              <p className="text-sm font-medium text-slate-500">Deleting <span className="font-black text-on-surface">{doctorToDelete?.nom}</span> will clear all their scheduled rounds and records.</p>
+              <p className="text-sm font-medium text-on-surface-variant">Deleting <span className="font-black text-on-surface">{doctorToDelete?.nom}</span> will clear all their scheduled rounds and records.</p>
                 <div className="mt-10 flex gap-4">
-                <button onClick={() => setIsDeleteModalOpen(false)} className="flex-1 py-4 bg-slate-50 rounded-2xl text-xs font-black uppercase tracking-widest text-slate-400">Wait, No</button>
+                <button onClick={() => setIsDeleteModalOpen(false)} className="flex-1 py-4 bg-surface rounded-2xl text-xs font-black uppercase tracking-widest text-slate-400">Wait, No</button>
                 <button 
                   onClick={handleDelete} 
                   disabled={loading}

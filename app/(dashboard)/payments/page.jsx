@@ -36,15 +36,15 @@ export default function PaymentsPage() {
 
   return (
     <div className="p-8 space-y-8 animate-in fade-in duration-700">
-      <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 pb-8">
+      <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-card-border pb-8">
         <div>
-          <h2 className="text-3xl font-black text-slate-900 tracking-tight mb-1">Financial Module</h2>
-          <p className="text-sm font-medium text-slate-500 uppercase tracking-widest text-[10px]">Revenue & Billing Control Center</p>
+          <h2 className="text-3xl font-black text-on-surface tracking-tight mb-1">Financial Module</h2>
+          <p className="text-sm font-medium text-on-surface-variant uppercase tracking-widest text-[10px]">Revenue & Billing Control Center</p>
         </div>
       </header>
 
       {/* Tabs Navigation */}
-      <div className="flex bg-slate-100/50 p-1 rounded-2xl w-fit border border-slate-200/50">
+      <div className="flex bg-card-bg dark:bg-slate-800/50 p-1 rounded-2xl w-fit border border-slate-200/50">
         {TABS.map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
@@ -54,8 +54,8 @@ export default function PaymentsPage() {
               onClick={() => setActiveTab(tab.id)}
               className={`flex items-center gap-2 px-6 py-3 rounded-xl text-xs font-bold transition-all duration-300 ${
                 isActive 
-                ? 'bg-white text-indigo-600 shadow-sm border border-slate-100' 
-                : 'text-slate-500 hover:text-slate-700'
+                ? 'bg-card-bg text-indigo-600 shadow-sm border border-card-border' 
+                : 'text-on-surface-variant hover:text-on-surface-variant'
               }`}
             >
               <Icon className={`w-4 h-4 ${isActive ? 'text-indigo-600' : 'text-slate-400'}`} />

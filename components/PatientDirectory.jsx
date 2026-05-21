@@ -11,17 +11,26 @@ import {
   User,
   X,
   ChevronRight,
+  ChevronDown,
   Filter,
-  Download
+  Download,
+  Eye
 } from 'lucide-react';
 import api from '../services/api';
+import { useTranslation } from '../contexts/LanguageContext';
+import PatientDetailsModal from './PatientDetailsModal';
 
 const PatientDirectory = ({ patients, setPatients }) => {
+  const { t, language } = useTranslation();
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedDept, setSelectedDept] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingPatient, setEditingPatient] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [viewingPatientId, setViewingPatientId] = useState(null);
+
+  const departments = ['Cardiology', 'Neurology', 'Pediatrics', 'Dermatology', 'Physiotherapy'];
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [patientToDelete, setPatientToDelete] = useState(null);
@@ -32,7 +41,6 @@ const PatientDirectory = ({ patients, setPatients }) => {
     dob: '',
     gender: 'Male',
     dept: 'Cardiology',
-    status: 'Active',
     email: '',
     phone: ''
   });
@@ -46,7 +54,6 @@ const PatientDirectory = ({ patients, setPatients }) => {
         dob: patient.dob || '',
         gender: patient.gender || 'Male',
         dept: patient.dept || 'Cardiology',
-        status: patient.status || 'Active',
         email: patient.email || '',
         phone: patient.phone || ''
       });
@@ -58,7 +65,6 @@ const PatientDirectory = ({ patients, setPatients }) => {
         dob: '',
         gender: 'Male',
         dept: 'Cardiology',
-        status: 'Active',
         email: '',
         phone: ''
       });
@@ -108,12 +114,16 @@ const PatientDirectory = ({ patients, setPatients }) => {
     }
   };
 
-  const filteredPatients = patients.filter(p => 
-    (p.nom?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
-    (p.prenom?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
-    String(p.id).toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (p.dept?.toLowerCase() || '').includes(searchTerm.toLowerCase())
-  );
+  const filteredPatients = patients.filter(p => {
+    const matchesSearch = 
+      (p.nom?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+      (p.prenom?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+      String(p.id).toLowerCase().includes(searchTerm.toLowerCase());
+      
+    const matchesDept = !selectedDept || p.dept === selectedDept;
+    
+    return matchesSearch && matchesDept;
+  });
 
   return (
     <div className="p-8 space-y-8 animate-in fade-in duration-700">
@@ -125,10 +135,10 @@ const PatientDirectory = ({ patients, setPatients }) => {
           </button>
         </div>
       )}
-      <header className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <header className="flex justify-between items-center bg-card-bg p-8 border-b border-card-border transition-colors duration-500">
         <div>
-          <h2 className="text-3xl font-black text-on-surface tracking-tight mb-1">Patient Directory</h2>
-          <p className="text-sm font-medium text-slate-500">Manage clinical records and admission history</p>
+          <h2 className="text-3xl font-black text-on-surface tracking-tight mb-1">{t('patientDirectory')}</h2>
+          <p className="text-sm font-medium text-on-surface-variant">{t('patientSub')}</p>
         </div>
         <div className="flex gap-3">
           <button
@@ -136,29 +146,56 @@ const PatientDirectory = ({ patients, setPatients }) => {
             disabled={loading}
             className="px-5 py-2.5 bg-primary text-white rounded-2xl text-xs font-bold uppercase tracking-widest shadow-lg shadow-primary/20 hover:scale-[1.02] transition-all active:scale-[0.98] flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {loading ? <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> : <Plus className="w-4 h-4" />} {loading ? 'Loading...' : 'Add Patient'}
+            {loading ? <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> : <Plus className="w-4 h-4" />} {loading ? t('loading') : t('newPatient')}
           </button>
         </div>
       </header>
 
       <div className="bg-card-bg rounded-[2.5rem] border border-card-border shadow-sm overflow-hidden transition-all duration-500">
-        <div className="p-8 border-b border-card-border flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-50/20 dark:bg-slate-800/20">
-          <div className="relative group flex-1 max-w-md">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-primary transition-colors" />
-            <input 
-              type="text" 
-              placeholder="Search by name, ID or department..." 
-              className="bg-surface border border-card-border rounded-2xl w-full py-3 pl-12 pr-4 text-sm focus:ring-2 focus:ring-primary/20 transition-all outline-none font-bold h-12 text-on-surface"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
+        <div className="p-8 border-b border-card-border flex flex-col lg:flex-row lg:items-center justify-between gap-4 bg-surface/20 dark:bg-slate-800/20">
+          <div className="flex flex-col sm:flex-row gap-4 flex-1">
+            <div className="relative group flex-1 max-w-md">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-primary transition-colors" />
+              <input 
+                type="text" 
+                placeholder={t('search')} 
+                className="bg-surface border border-card-border rounded-2xl w-full py-3 pl-12 pr-4 text-sm focus:ring-2 focus:ring-primary/20 transition-all outline-none font-bold h-12 text-on-surface"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
+            
+            <div className="relative min-w-[200px]">
+              <select
+                className="bg-surface border border-card-border rounded-2xl py-3 pl-5 pr-10 text-sm font-bold focus:ring-2 focus:ring-primary/20 transition-all outline-none appearance-none text-on-surface h-12 w-full cursor-pointer"
+                value={selectedDept}
+                onChange={(e) => setSelectedDept(e.target.value)}
+              >
+                <option value="">{language === 'en' ? 'All Departments' : 'Tous les départements'}</option>
+                {departments.map((dept) => (
+                  <option key={dept} value={dept}>{dept}</option>
+                ))}
+              </select>
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-400">
+                <ChevronDown className="w-4 h-4" />
+              </div>
+            </div>
           </div>
-          <div className="flex items-center gap-2">
-            <button className="p-3 bg-surface border border-card-border rounded-xl text-slate-400 hover:text-primary transition-colors">
-              <Filter className="w-5 h-5" />
-            </button>
+
+          <div className="flex items-center gap-3">
+            {(selectedDept || searchTerm) && (
+              <button
+                onClick={() => {
+                  setSelectedDept('');
+                  setSearchTerm('');
+                }}
+                className="h-12 px-5 bg-rose-50 text-rose-600 rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-rose-100 hover:text-rose-700 transition-all flex items-center gap-2"
+              >
+                <X className="w-4 h-4" /> {language === 'en' ? 'Reset' : 'Réinitialiser'}
+              </button>
+            )}
             <span className="text-xs font-bold text-slate-400 uppercase tracking-widest px-2">
-              {filteredPatients.length} Records Found
+              {filteredPatients.length} {language === 'en' ? 'Records Found' : 'Dossiers Trouvés'}
             </span>
           </div>
         </div>
@@ -166,15 +203,14 @@ const PatientDirectory = ({ patients, setPatients }) => {
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-slate-50">
-                <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Patient Details</th>
-                <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Demographics</th>
-                <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Department</th>
-                <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-center">Status</th>
-                <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-right">Actions</th>
+              <tr className="border-b border-card-border">
+                <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">{t('patientDetails')}</th>
+                <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">{language === 'en' ? 'Demographics' : 'Démographie'}</th>
+                <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">{t('dept')}</th>
+                <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-right">{t('actions')}</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-50">
+            <tbody className="divide-y divide-card-border">
               <AnimatePresence>
                 {filteredPatients.map((patient, i) => (
                   <motion.tr 
@@ -183,7 +219,7 @@ const PatientDirectory = ({ patients, setPatients }) => {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.95 }}
                     transition={{ delay: i * 0.05 }}
-                    className="group hover:bg-slate-50/50 transition-colors"
+                    className="group hover:bg-surface/50 transition-colors"
                   >
                     <td className="px-8 py-6">
                       <div className="flex items-center gap-4">
@@ -203,21 +239,17 @@ const PatientDirectory = ({ patients, setPatients }) => {
                       </div>
                     </td>
                     <td className="px-8 py-6">
-                      <span className="text-xs font-black text-slate-500 uppercase tracking-tight">{patient.dept}</span>
-                    </td>
-                    <td className="px-8 py-6">
-                      <div className="flex justify-center">
-                        <span className={`px-3 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest ring-1 ${
-                          patient.status === 'Active' ? 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 ring-emerald-100 dark:ring-emerald-900/50' :
-                          patient.status === 'Waiting' ? 'bg-amber-50 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 ring-amber-100 dark:ring-amber-900/50' :
-                          'bg-slate-50 dark:bg-slate-800 text-slate-400 ring-slate-100 dark:ring-slate-700'
-                        }`}>
-                          {patient.status}
-                        </span>
-                      </div>
+                      <span className="text-xs font-black text-on-surface-variant uppercase tracking-tight">{patient.dept}</span>
                     </td>
                     <td className="px-8 py-6">
                       <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <button 
+                          onClick={() => setViewingPatientId(patient.id)}
+                          title="View Details"
+                          className="p-2.5 bg-card-bg border border-card-border rounded-xl text-slate-400 hover:text-emerald-500 hover:border-emerald-200 transition-all shadow-sm"
+                        >
+                          <Eye className="w-4 h-4" />
+                        </button>
                         <button 
                           onClick={() => handleOpenModal(patient)}
                           className="p-2.5 bg-card-bg border border-card-border rounded-xl text-slate-400 hover:text-primary hover:border-primary/20 transition-all shadow-sm"
@@ -239,16 +271,24 @@ const PatientDirectory = ({ patients, setPatients }) => {
           </table>
           {filteredPatients.length === 0 && (
             <div className="py-24 text-center">
-              <div className="inline-flex p-6 bg-slate-50 rounded-full mb-6">
+              <div className="inline-flex p-6 bg-surface rounded-full mb-6">
                 <User className="w-12 h-12 text-slate-200" />
               </div>
-              <h3 className="text-lg font-black text-on-surface">No Patients Found</h3>
-              <p className="text-sm font-bold text-slate-400 mt-2 max-w-sm mx-auto">Try adjusting your search filters or add a new patient to the system.</p>
+              <h3 className="text-lg font-black text-on-surface">
+                {selectedDept 
+                  ? (language === 'en' ? `No Patients in ${selectedDept}` : `Aucun patient en ${selectedDept}`)
+                  : (language === 'en' ? 'No Patients Found' : 'Aucun patient trouvé')}
+              </h3>
+              <p className="text-sm font-bold text-slate-400 mt-2 max-w-sm mx-auto">
+                {selectedDept 
+                  ? (language === 'en' ? `There are currently no patients registered under the ${selectedDept} department.` : `Il n'y a actuellement aucun patient enregistré dans le département de ${selectedDept}.`)
+                  : (language === 'en' ? 'Try adjusting your search filters or add a new patient to the system.' : 'Essayez d\'ajuster vos filtres de recherche ou d\'ajouter un nouveau patient au système.')}
+              </p>
               <button 
                 onClick={() => handleOpenModal()}
                 className="mt-8 px-6 py-3 bg-primary text-white rounded-2xl text-xs font-bold uppercase tracking-widest shadow-lg shadow-primary/20"
               >
-                Create New Record
+                {t('newPatient')}
               </button>
             </div>
           )}
@@ -273,7 +313,7 @@ const PatientDirectory = ({ patients, setPatients }) => {
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
               className="relative w-full max-w-xl bg-card-bg rounded-[2.5rem] shadow-2xl overflow-hidden border border-card-border transition-all duration-500"
             >
-              <div className="p-8 border-b border-card-border flex justify-between items-center bg-slate-50/50 dark:bg-slate-800/10">
+              <div className="p-8 border-b border-card-border flex justify-between items-center bg-surface/50 dark:bg-slate-800/10">
                 <div>
                   <h3 className="text-xl font-black text-on-surface tracking-tight">
                     {editingPatient ? 'Update Patient Record' : 'New Admission'}
@@ -307,7 +347,7 @@ const PatientDirectory = ({ patients, setPatients }) => {
                       required
                       type="text" 
                       placeholder="e.g. Smith"
-                      className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 px-5 text-sm font-bold focus:ring-2 focus:ring-primary/20 transition-all outline-none"
+                      className="w-full bg-surface border border-card-border rounded-2xl py-4 px-5 text-sm font-bold focus:ring-2 focus:ring-primary/20 transition-all outline-none"
                       value={formData.nom}
                       onChange={(e) => setFormData({...formData, nom: e.target.value})}
                     />
@@ -318,7 +358,7 @@ const PatientDirectory = ({ patients, setPatients }) => {
                     <input 
                       required
                       type="date" 
-                      className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 px-5 text-sm font-bold focus:ring-2 focus:ring-primary/20 transition-all outline-none"
+                      className="w-full bg-surface border border-card-border rounded-2xl py-4 px-5 text-sm font-bold focus:ring-2 focus:ring-primary/20 transition-all outline-none"
                       value={formData.dob}
                       onChange={(e) => setFormData({...formData, dob: e.target.value})}
                     />
@@ -327,7 +367,7 @@ const PatientDirectory = ({ patients, setPatients }) => {
                   <div className="space-y-2">
                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Gender</label>
                     <select 
-                      className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 px-5 text-sm font-bold focus:ring-2 focus:ring-primary/20 transition-all outline-none appearance-none"
+                      className="w-full bg-surface border border-card-border rounded-2xl py-4 px-5 text-sm font-bold focus:ring-2 focus:ring-primary/20 transition-all outline-none appearance-none"
                       value={formData.gender}
                       onChange={(e) => setFormData({...formData, gender: e.target.value})}
                     >
@@ -336,10 +376,10 @@ const PatientDirectory = ({ patients, setPatients }) => {
                     </select>
                   </div>
 
-                  <div className="space-y-2">
+                  <div className="space-y-2 w-[31rem]">
                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Department</label>
                     <select 
-                      className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 px-5 text-sm font-bold focus:ring-2 focus:ring-primary/20 transition-all outline-none appearance-none"
+                      className="w-full bg-surface border border-card-border rounded-2xl py-4 px-5 text-sm font-bold focus:ring-2 focus:ring-primary/20 transition-all outline-none appearance-none"
                       value={formData.dept}
                       onChange={(e) => setFormData({...formData, dept: e.target.value})}
                     >
@@ -351,34 +391,20 @@ const PatientDirectory = ({ patients, setPatients }) => {
                     </select>
                   </div>
 
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Admission Status</label>
-                    <select 
-                      className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 px-5 text-sm font-bold focus:ring-2 focus:ring-primary/20 transition-all outline-none appearance-none"
-                      value={formData.status}
-                      onChange={(e) => setFormData({...formData, status: e.target.value})}
-                    >
-                      <option>Active</option>
-                      <option>Waiting</option>
-                      <option>Billing</option>
-                      <option>Post-Op</option>
-                    </select>
-                  </div>
-
-                  <div className="col-span-2 space-y-2 pt-4 border-t border-slate-50">
+                  <div className="col-span-2 space-y-2 pt-4 border-t border-card-border">
                     <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest mb-4">Contact Information</p>
                     <div className="grid grid-cols-2 gap-4">
                       <input 
                         type="email" 
                         placeholder="Email Address"
-                        className="bg-slate-50 border border-slate-100 rounded-xl py-3 px-4 text-xs font-bold outline-none"
+                        className="bg-surface border border-card-border rounded-xl py-3 px-4 text-xs font-bold outline-none"
                         value={formData.email}
                         onChange={(e) => setFormData({...formData, email: e.target.value})}
                       />
                       <input 
                         type="tel" 
                         placeholder="Phone Number"
-                        className="bg-slate-50 border border-slate-100 rounded-xl py-3 px-4 text-xs font-bold outline-none"
+                        className="bg-surface border border-card-border rounded-xl py-3 px-4 text-xs font-bold outline-none"
                         value={formData.phone}
                         onChange={(e) => setFormData({...formData, phone: e.target.value})}
                       />
@@ -390,7 +416,7 @@ const PatientDirectory = ({ patients, setPatients }) => {
                   <button 
                     type="button"
                     onClick={() => setIsModalOpen(false)}
-                    className="flex-1 py-4 bg-slate-50 rounded-2xl text-xs font-black uppercase tracking-widest text-slate-400 hover:bg-slate-100 transition-colors"
+                    className="flex-1 py-4 bg-surface rounded-2xl text-xs font-black uppercase tracking-widest text-slate-400 hover:bg-card-bg dark:bg-slate-800 transition-colors"
                   >
                     Discard Changes
                   </button>
@@ -427,21 +453,21 @@ const PatientDirectory = ({ patients, setPatients }) => {
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="relative w-full max-w-md bg-white rounded-[2.5rem] shadow-2xl p-10 overflow-hidden"
+              className="relative w-full max-w-md bg-card-bg rounded-[2.5rem] shadow-2xl p-10 overflow-hidden"
             >
               <div className="text-center">
                 <div className="w-20 h-20 bg-rose-50 rounded-full flex items-center justify-center mx-auto mb-6 text-rose-500">
                   <Trash2 className="w-10 h-10" />
                 </div>
                 <h3 className="text-2xl font-black text-on-surface tracking-tight mb-2">Delete Patient Record?</h3>
-                <p className="text-sm font-medium text-slate-500 leading-relaxed">
+                <p className="text-sm font-medium text-on-surface-variant leading-relaxed">
                   Are you sure you want to delete <span className="font-black text-on-surface">{patientToDelete?.prenom} {patientToDelete?.nom}</span>'s record? This action cannot be undone.
                 </p>
                 
                 <div className="mt-10 flex gap-4">
                   <button 
                     onClick={() => setIsDeleteModalOpen(false)}
-                    className="flex-1 py-4 bg-slate-50 rounded-2xl text-xs font-black uppercase tracking-widest text-slate-400 hover:bg-slate-100 transition-colors"
+                    className="flex-1 py-4 bg-surface rounded-2xl text-xs font-black uppercase tracking-widest text-slate-400 hover:bg-card-bg dark:bg-slate-800 transition-colors"
                   >
                     Cancel
                   </button>
@@ -462,6 +488,12 @@ const PatientDirectory = ({ patients, setPatients }) => {
           </div>
         )}
       </AnimatePresence>
+
+      <PatientDetailsModal 
+        isOpen={!!viewingPatientId} 
+        patientId={viewingPatientId} 
+        onClose={() => setViewingPatientId(null)} 
+      />
     </div>
   );
 };

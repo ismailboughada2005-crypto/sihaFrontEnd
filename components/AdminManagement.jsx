@@ -121,14 +121,14 @@ const AdminManagement = ({ admins, setAdmins }) => {
         </button>
       </div>
 
-      <div className="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden">
-        <div className="p-8 border-b border-slate-50 flex items-center justify-between bg-slate-50/30">
+      <div className="bg-card-bg rounded-[2.5rem] border border-card-border shadow-sm overflow-hidden">
+        <div className="p-8 border-b border-card-border flex items-center justify-between bg-surface/30">
           <div className="relative flex-1 max-w-md">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
             <input 
               type="text" 
               placeholder="Search by name or email..."
-              className="w-full bg-white border border-slate-200 rounded-xl py-3 pl-11 pr-4 text-sm font-bold focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+              className="w-full bg-card-bg border border-slate-200 rounded-xl py-3 pl-11 pr-4 text-sm font-bold focus:ring-2 focus:ring-primary/20 outline-none transition-all"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -144,7 +144,7 @@ const AdminManagement = ({ admins, setAdmins }) => {
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-slate-50">
+              <tr className="border-b border-card-border">
                 <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Administrator</th>
                 <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Contact</th>
                 <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Access Level</th>
@@ -157,7 +157,7 @@ const AdminManagement = ({ admins, setAdmins }) => {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: idx * 0.05 }}
                   key={admin.id} 
-                  className="group hover:bg-slate-50/50 transition-colors border-b last:border-none border-slate-50"
+                  className="group hover:bg-surface/50 transition-colors border-b last:border-none border-card-border"
                 >
                   <td className="px-8 py-6">
                     <div className="flex items-center gap-4">
@@ -171,7 +171,7 @@ const AdminManagement = ({ admins, setAdmins }) => {
                     </div>
                   </td>
                   <td className="px-8 py-6">
-                    <div className="flex items-center gap-2 text-xs font-bold text-slate-500">
+                    <div className="flex items-center gap-2 text-xs font-bold text-on-surface-variant">
                       <Mail className="w-3.5 h-3.5 text-slate-300" />
                       {admin.email}
                     </div>
@@ -210,13 +210,13 @@ const AdminManagement = ({ admins, setAdmins }) => {
               initial={{ opacity: 0, scale: 0.9, y: 20 }} 
               animate={{ opacity: 1, scale: 1, y: 0 }} 
               exit={{ opacity: 0, scale: 0.9, y: 20 }} 
-              className="relative w-full max-w-lg bg-white rounded-[2.5rem] shadow-2xl overflow-hidden"
+              className="relative w-full max-w-lg bg-card-bg rounded-[2.5rem] shadow-2xl overflow-hidden"
             >
-              <div className="p-8 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+              <div className="p-8 border-b border-card-border flex justify-between items-center bg-surface/50">
                 <h3 className="text-xl font-black text-on-surface tracking-tight">
                   {editingAdmin ? 'Edit Administrator' : 'Register New Admin'}
                 </h3>
-                <button onClick={() => setIsModalOpen(false)} className="p-2 hover:bg-white rounded-full transition-colors"><X className="w-5 h-5 text-slate-400" /></button>
+                <button onClick={() => setIsModalOpen(false)} className="p-2 hover:bg-card-bg rounded-full transition-colors"><X className="w-5 h-5 text-slate-400" /></button>
               </div>
               
               <form onSubmit={handleSubmit} className="p-8 space-y-6">
@@ -226,7 +226,7 @@ const AdminManagement = ({ admins, setAdmins }) => {
                     required 
                     type="text" 
                     placeholder="e.g. Administrator General"
-                    className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 px-5 text-sm font-bold outline-none focus:ring-2 focus:ring-primary/20 transition-all"
+                    className="w-full bg-surface border border-card-border rounded-2xl py-4 px-5 text-sm font-bold outline-none focus:ring-2 focus:ring-primary/20 transition-all"
                     value={formData.nom} 
                     onChange={(e) => setFormData({...formData, nom: e.target.value})} 
                   />
@@ -239,7 +239,7 @@ const AdminManagement = ({ admins, setAdmins }) => {
                       required 
                       type="email" 
                       placeholder="admin@siha.com"
-                      className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 pl-14 pr-5 text-sm font-bold outline-none focus:ring-2 focus:ring-primary/20 transition-all"
+                      className="w-full bg-surface border border-card-border rounded-2xl py-4 pl-14 pr-5 text-sm font-bold outline-none focus:ring-2 focus:ring-primary/20 transition-all"
                       value={formData.email} 
                       onChange={(e) => setFormData({...formData, email: e.target.value})} 
                     />
@@ -253,7 +253,7 @@ const AdminManagement = ({ admins, setAdmins }) => {
                       required={!editingAdmin}
                       type="password" 
                       placeholder="••••••••"
-                      className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 pl-14 pr-5 text-sm font-bold outline-none focus:ring-2 focus:ring-primary/20 transition-all"
+                      className="w-full bg-surface border border-card-border rounded-2xl py-4 pl-14 pr-5 text-sm font-bold outline-none focus:ring-2 focus:ring-primary/20 transition-all"
                       value={formData.motDePasse} 
                       onChange={(e) => setFormData({...formData, motDePasse: e.target.value})} 
                     />
@@ -261,7 +261,7 @@ const AdminManagement = ({ admins, setAdmins }) => {
                 </div>
 
                 <div className="pt-4 flex gap-4">
-                  <button type="button" onClick={() => setIsModalOpen(false)} className="flex-1 py-4 bg-slate-50 rounded-2xl text-xs font-black uppercase text-slate-400 tracking-widest">Cancel</button>
+                  <button type="button" onClick={() => setIsModalOpen(false)} className="flex-1 py-4 bg-surface rounded-2xl text-xs font-black uppercase text-slate-400 tracking-widest">Cancel</button>
                   <button 
                     type="submit" 
                     disabled={loading}
@@ -281,16 +281,16 @@ const AdminManagement = ({ admins, setAdmins }) => {
         {isDeleteModalOpen && (
           <div className="fixed inset-0 z-[110] flex items-center justify-center p-6 sm:p-0">
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setIsDeleteModalOpen(false)} className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" />
-            <motion.div initial={{ opacity: 0, scale: 0.9, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.9, y: 20 }} className="relative w-full max-w-md bg-white rounded-[2.5rem] p-10 text-center shadow-2xl">
+            <motion.div initial={{ opacity: 0, scale: 0.9, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.9, y: 20 }} className="relative w-full max-w-md bg-card-bg rounded-[2.5rem] p-10 text-center shadow-2xl">
               <div className="w-20 h-20 bg-rose-50 rounded-full flex items-center justify-center mx-auto mb-6 text-rose-500 shadow-inner">
                 <ShieldAlert className="w-10 h-10" />
               </div>
               <h3 className="text-2xl font-black text-on-surface mb-2">Revoke Clearance?</h3>
-              <p className="text-sm font-medium text-slate-500 leading-relaxed">
+              <p className="text-sm font-medium text-on-surface-variant leading-relaxed">
                 You are about to remove <span className="font-black text-on-surface">{adminToDelete?.nom}</span> from the administrator list. This will immediately revoke all system credentials.
               </p>
               <div className="mt-10 flex gap-4">
-                <button onClick={() => setIsDeleteModalOpen(false)} className="flex-1 py-4 bg-slate-50 rounded-2xl text-xs font-black uppercase text-slate-400 tracking-widest">Cancel</button>
+                <button onClick={() => setIsDeleteModalOpen(false)} className="flex-1 py-4 bg-surface rounded-2xl text-xs font-black uppercase text-slate-400 tracking-widest">Cancel</button>
                 <button 
                   onClick={handleDelete} 
                   disabled={loading}

@@ -57,7 +57,7 @@ export default function DashboardLayout({ children }) {
       <div className="min-h-screen bg-surface flex items-center justify-center">
         <div className="text-center">
           <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-lg font-bold text-slate-600 font-sans tracking-tight">Accessing Terminal...</p>
+          <p className="text-lg font-bold text-on-surface-variant font-sans tracking-tight">Accessing Terminal...</p>
         </div>
       </div>
     );

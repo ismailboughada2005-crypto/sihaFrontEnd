@@ -32,5 +32,12 @@ export default function AppointmentsPage() {
 
   if (loading) return <LoadingSpinner />;
 
-  return <AppointmentManager appointments={appointments} setAppointments={setAppointments} patients={patients} doctors={doctors} />;
+  return (
+    <AppointmentManager 
+      appointments={appointments} 
+      setAppointments={setAppointments} 
+      patients={patients} 
+      doctors={doctors} 
+    />
+  );
 }

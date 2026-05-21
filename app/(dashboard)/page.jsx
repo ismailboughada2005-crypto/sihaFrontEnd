@@ -10,36 +10,42 @@ import api from '../../services/api';
 export default function HomePage() {
   const router = useRouter();
   const [currentUser, setCurrentUser] = useState(null);
-  const [data, setData] = useState({ patients: [], doctors: [], appointments: [] });
+  const [data, setData] = useState({ patients: [], doctors: [], appointments: [], staff: [] });
   const [loading, setLoading] = useState(true);
 
+  const loadData = async () => {
+    try {
+      const [patientsRes, doctorsRes, appointmentsRes, staffRes] = await Promise.all([
+        api.patients.getAll().catch(() => []),
+        api.doctors.getAll().catch(() => []),
+        api.appointments.getAll().catch(() => []),
+        api.secretaries.getAll().catch(() => [])
+      ]);
+
+      setData({
+        patients: patientsRes,
+        doctors: doctorsRes,
+        appointments: appointmentsRes,
+        staff: staffRes
+      });
+    } catch (err) {
+      console.error('Failed to load dashboard data', err);
+    }
+  };
+
   useEffect(() => {
-    const loadData = async () => {
+    const init = async () => {
       try {
         const user = await api.getUser();
         setCurrentUser(user);
-
-        // Fetch dashboard data
-        const [patientsRes, doctorsRes, appointmentsRes, staffRes] = await Promise.all([
-          api.patients.getAll().catch(() => []),
-          api.doctors.getAll().catch(() => []),
-          api.appointments.getAll().catch(() => []),
-          api.secretaries.getAll().catch(() => [])
-        ]);
-
-        setData({
-          patients: patientsRes,
-          doctors: doctorsRes,
-          appointments: appointmentsRes,
-          staff: staffRes
-        });
+        await loadData();
       } catch (err) {
-        console.error('Failed to load dashboard data', err);
+        console.error('Failed to initialize homepage', err);
       } finally {
         setLoading(false);
       }
     };
-    loadData();
+    init();
   }, []);
 
   if (loading) return null;
@@ -50,7 +56,14 @@ export default function HomePage() {
     case 'doctor':
       return <DoctorDashboard />;
     case 'staff':
-      return <StaffDashboard patients={data.patients} />;
+      return (
+        <StaffDashboard 
+          patients={data.patients} 
+          doctors={data.doctors} 
+          appointments={data.appointments} 
+          refreshData={loadData} 
+        />
+      );
     default:
       return <div>Access Denied</div>;
   }
