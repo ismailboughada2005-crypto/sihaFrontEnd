@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import api from '../services/api';
 
 export function useApi(apiCall, immediate = true) {
   const [data, setData] = useState(null);

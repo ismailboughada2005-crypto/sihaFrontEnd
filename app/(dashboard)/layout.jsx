@@ -15,19 +15,18 @@ export default function DashboardLayout({ children }) {
 
   useEffect(() => {
     const checkAuth = async () => {
-      const token = localStorage.getItem('auth_token');
+      const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
       if (!token) {
-        router.push('/login');
+        if (pathname !== '/') {
+          router.push('/login');
+        }
+        setLoading(false);
         return;
       }
-
       try {
         const user = await api.getUser();
         setCurrentUser(user);
-        
-        // Fetch counts for sidebar badges from optimized endpoint
         const stats = await api.stats.getCounts().catch(() => ({}));
-        
         setCounts({
           patients: stats.patients || 0,
           doctors: stats.doctors || 0,
@@ -36,13 +35,15 @@ export default function DashboardLayout({ children }) {
         });
       } catch (err) {
         localStorage.removeItem('auth_token');
-        router.push('/login');
+        if (pathname !== '/') {
+          router.push('/login');
+        }
       } finally {
         setLoading(false);
       }
     };
     checkAuth();
-  }, [router]);
+  }, [router, pathname]);
 
   const handleLogout = async () => {
     try {
@@ -63,15 +64,19 @@ export default function DashboardLayout({ children }) {
     );
   }
 
-  // Map pathname to activeTab for Sidebar highlighting
-  const activeTab = pathname.split('/').pop() || 'admin';
+  // If there is no authenticated user, we are on the public landing page.
+  // Render children directly without the Sidebar and Navbar.
+  if (!currentUser) {
+    return <>{children}</>;
+  }
 
+  const activeTab = pathname.split('/').pop() || 'admin';
   return (
     <div className="flex flex-col min-h-screen bg-surface">
       <Navbar 
         userProfile={{ 
           name: currentUser?.name || 'User', 
-          role: currentUser?.role || 'staff',
+          role: currentUser?.role || 'staff', 
         }} 
         onTabChange={(tab) => router.push(`/${tab === 'admin' ? '' : tab}`)} 
       />
@@ -83,8 +88,8 @@ export default function DashboardLayout({ children }) {
           doctorCount={counts.doctors} 
           staffCount={counts.staff} 
           appointmentCount={counts.appointments} 
-          userRole={currentUser?.role}
-          onLogout={handleLogout}
+          userRole={currentUser?.role} 
+          onLogout={handleLogout} 
         />
         <main className="flex-1 overflow-x-hidden">
           <div className="max-w-[1600px] mx-auto">
@@ -95,3 +100,4 @@ export default function DashboardLayout({ children }) {
     </div>
   );
 }
+ 

@@ -73,19 +73,10 @@ export default function PaymentsDashboard() {
 
   if (loading) {
     return (
-      <div
-        onClick={() => handleOpenModal()}
-        disabled={loading}
-        className="px-5 py-2.5 bg-primary text-white rounded-2xl text-xs font-bold uppercase tracking-widest shadow-lg shadow-primary/20 hover:scale-[1.02] transition-all active:scale-[0.98] flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        {loading ? (
-          <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-        ) : (
-          <Plus className="w-4 h-4" />
-        )}{" "}
-        {loading ? "Loading..." : "Add Patient"}
-      </div>
-    );
+      <div className="flex flex-col items-center justify-center pt-32 animate-in fade-in duration-500">
+    <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin mb-4"></div>
+    </div>
+    )
   }
 
   const maxMonthly = Math.max(...monthly.map((m) => m.revenue || 0), 1);

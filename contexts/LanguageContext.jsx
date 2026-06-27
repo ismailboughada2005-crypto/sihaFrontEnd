@@ -141,22 +141,7 @@ const dictionary = {
     insurance: "Insurance",
     paid: "Paid",
     pending: "Pending",
-    failed: "Failed",
-
-    // Settings
-    systemSettings: "System Settings",
-    settingsSub: "Configure your workspace environment and security preferences",
-    appearance: "Appearance",
-    darkMode: "Dark Mode",
-    lightMode: "Light Mode",
-    languageRegion: "Language & Region",
-    systemLanguage: "System Language",
-    timeZone: "Time Zone",
-    general: "General",
-    notifications: "Notifications",
-    security: "Security",
-    account: "Account",
-    api: "API & Integrations"
+    failed: "Failed"
   },
   fr: {
     // Common Actions
@@ -294,22 +279,7 @@ const dictionary = {
     insurance: "Assurance",
     paid: "Payé",
     pending: "En attente",
-    failed: "Échoué",
-
-    // Settings
-    systemSettings: "Paramètres du Système",
-    settingsSub: "Configurez l'environnement de votre espace de travail et vos préférences de sécurité",
-    appearance: "Apparence",
-    darkMode: "Mode Sombre",
-    lightMode: "Mode Clair",
-    languageRegion: "Langue & Région",
-    systemLanguage: "Langue du système",
-    timeZone: "Fuseau horaire",
-    general: "Général",
-    notifications: "Notifications",
-    security: "Sécurité",
-    account: "Compte",
-    api: "API & Intégrations"
+    failed: "Échoué"
   }
 };
 

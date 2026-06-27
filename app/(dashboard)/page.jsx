@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import AdminDashboard from '../../components/AdminDashboard';
 import DoctorDashboard from '../../components/DoctorDashboard';
 import StaffDashboard from '../../components/StaffDashboard';
+import LandingPage from '../../components/LandingPage';
 import api from '../../services/api';
 
 export default function HomePage() {
@@ -21,13 +22,7 @@ export default function HomePage() {
         api.appointments.getAll().catch(() => []),
         api.secretaries.getAll().catch(() => [])
       ]);
-
-      setData({
-        patients: patientsRes,
-        doctors: doctorsRes,
-        appointments: appointmentsRes,
-        staff: staffRes
-      });
+      setData({ patients: patientsRes, doctors: doctorsRes, appointments: appointmentsRes, staff: staffRes });
     } catch (err) {
       console.error('Failed to load dashboard data', err);
     }
@@ -35,6 +30,11 @@ export default function HomePage() {
 
   useEffect(() => {
     const init = async () => {
+      const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
+      if (!token) {
+        setLoading(false);
+        return;
+      }
       try {
         const user = await api.getUser();
         setCurrentUser(user);
@@ -50,9 +50,21 @@ export default function HomePage() {
 
   if (loading) return null;
 
+  if (!currentUser) {
+    return <LandingPage />;
+  }
+
   switch (currentUser?.role) {
     case 'admin':
-      return <AdminDashboard patients={data.patients} doctors={data.doctors} staff={data.staff} appointments={data.appointments} onTabChange={(tab) => router.push(`/${tab}`)} />;
+      return (
+        <AdminDashboard 
+          patients={data.patients} 
+          doctors={data.doctors} 
+          staff={data.staff} 
+          appointments={data.appointments} 
+          onTabChange={(tab) => router.push(`/${tab}`)} 
+        />
+      );
     case 'doctor':
       return <DoctorDashboard />;
     case 'staff':
@@ -65,6 +77,7 @@ export default function HomePage() {
         />
       );
     default:
-      return <div>Access Denied</div>;
+      return <div className="p-8 text-center text-red-500 font-bold">Access Denied</div>;
   }
 }
+ 

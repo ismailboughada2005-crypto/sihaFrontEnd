@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Lock, LogIn, ShieldCheck, Activity, UserCog, Stethoscope } from 'lucide-react';
+import { Mail, Lock, LogIn, ShieldCheck, UserCog, Stethoscope } from 'lucide-react';
 import api from '../services/api';
 import Cookies from 'js-cookie';
 import Logo from '../images/logo.png';
@@ -62,8 +62,8 @@ const LoginPage = ({ onLogin }) => {
         </div>
 
         <div className="text-center mb-10">
-          <div className="w-20 h-20 bg-primary/10 rounded-3xl flex items-center justify-center mx-auto mb-6 text-primary rotate-3 hover:rotate-0 transition-transform">
-            <Image src={Logo} alt="siha clinic" className=' '/>
+          <div className="w-20 h-20 bg-primary/10 rounded-3xl flex items-center justify-center mx-auto mb-6 text-primary rotate  transition-transform scale-130">
+            <a href='/'><Image src={Logo} alt="siha clinic" className=' '/></a>
           </div>
           <h1 className="text-3xl font-black text-on-surface tracking-tight uppercase">siha</h1>
           <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-2">
