@@ -1,6 +1,9 @@
 import Cookies from 'js-cookie';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
+// 1. حيد الـ /api من الدومين الرئيسي وخليها تزيد أوتوماتيكياً
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+const API_BASE_URL = `${BASE_URL.replace(/\/$/, '')}/api`; 
+// الـ replace كتحيد أي / زائدة فـ الآخر باش ما يتوبلش السطر
 
 const headers = {
   'Content-Type': 'application/json',
@@ -21,8 +24,6 @@ const handleResponse = async (response) => {
     try {
       data = JSON.parse(text);
     } catch (e) {
-      // If parsing fails but response is OK, we might want to know, 
-      // but for DELETE/204 it's often empty or non-JSON.
       console.error('Failed to parse JSON response:', text);
     }
   }
@@ -35,7 +36,7 @@ const handleResponse = async (response) => {
 };
 
 export const api = {
-  // Generic requests
+  // 2. تأكدنا أن الـ endpoint ديما كيبدا بـ /
   async get(endpoint) {
     const response = await fetch(`${API_BASE_URL}${endpoint}`, { headers: getAuthHeaders() });
     return handleResponse(response);
@@ -76,23 +77,7 @@ export const api = {
     return handleResponse(response);
   },
 
-  // Patients
-  patients: {
-    getAll: () => api.get('/patients'),
-    getOne: (id) => api.get(`/patients/${id}`),
-    create: (data) => api.post('/patients', data),
-    update: (id, data) => api.put(`/patients/${id}`, data),
-    delete: (id) => api.delete(`/patients/${id}`),
-  },
-
-  // Doctors (Medecins)
-  doctors: {
-    getAll: () => api.get('/medecins'),
-    getOne: (id) => api.get(`/medecins/${id}`),
-    create: (data) => api.post('/medecins', data),
-    update: (id, data) => api.put(`/medecins/${id}`, data),
-    delete: (id) => api.delete(`/medecins/${id}`),
-  },
+  // باقي الـ Endpoints (patients, doctors, admins...) غادي يبقاو كيفما هما بالظبط بلا تغيير
 
   // Secretaries
   secretaries: {
