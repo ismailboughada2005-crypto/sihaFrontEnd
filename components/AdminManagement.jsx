@@ -137,18 +137,20 @@ const AdminManagement = ({ admins, setAdmins }) => {
             Manage system administrators and security clearance
           </p>
         </div>
-        <button
-          onClick={() => handleOpenModal()}
-          disabled={loading}
-          className="flex items-center gap-3 bg-primary text-white px-8 py-4 rounded-2xl text-xs font-black uppercase tracking-widest shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all w-full md:w-auto justify-center disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          {loading ? (
-            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-          ) : (
-            <UserPlus className="w-4 h-4" />
-          )}{" "}
-          {loading ? "Processing..." : "Add New Administrator"}
-        </button>
+        {currentUser?.email === SENIOR_ADMIN_EMAIL && (
+          <button
+            onClick={() => handleOpenModal()}
+            disabled={loading}
+            className="flex items-center gap-3 bg-primary text-white px-8 py-4 rounded-2xl text-xs font-black uppercase tracking-widest shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all w-full md:w-auto justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {loading ? (
+              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+            ) : (
+              <UserPlus className="w-4 h-4" />
+            )}{" "}
+            {loading ? "Processing..." : "Add New Administrator"}
+          </button>
+        )}
       </div>
 
       <div className="bg-card-bg rounded-[2.5rem] border border-card-border shadow-sm overflow-hidden">
@@ -186,7 +188,7 @@ const AdminManagement = ({ admins, setAdmins }) => {
                 <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">
                   Access Level
                 </th>
-                {filteredAdmins.some(
+                {currentUser?.email === SENIOR_ADMIN_EMAIL && filteredAdmins.some(
                   (admin) => admin.email !== SENIOR_ADMIN_EMAIL,
                 ) && (
                   <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">
@@ -246,28 +248,31 @@ const AdminManagement = ({ admins, setAdmins }) => {
                     </div>
                   </td>
 
-                  {/* عرض الأزرار فقط إذا لم يكن الحساب الحالي هو الـ Senior Admin */}
-                  <td className="px-8 py-6">
-                    {admin.email !== SENIOR_ADMIN_EMAIL && (
-                      <div className="flex items-center gap-3">
-                        <button
-                          onClick={() => handleOpenModal(admin)}
-                          className="text-xs font-bold text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg transition-colors"
-                        >
-                          Edit
-                        </button>
-                        <button
-                          onClick={() => {
-                            setAdminToDelete(admin);
-                            setIsDeleteModalOpen(true);
-                          }}
-                          className="text-xs font-bold text-rose-600 hover:text-rose-800 bg-rose-50 hover:bg-rose-100 p-1.5 rounded-lg transition-colors"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </div>
-                    )}
-                  </td>
+                  {currentUser?.email === SENIOR_ADMIN_EMAIL && filteredAdmins.some(
+                    (a) => a.email !== SENIOR_ADMIN_EMAIL,
+                  ) && (
+                    <td className="px-8 py-6">
+                      {admin.email !== SENIOR_ADMIN_EMAIL && (
+                        <div className="flex items-center gap-3">
+                          <button
+                            onClick={() => handleOpenModal(admin)}
+                            className="text-xs font-bold text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg transition-colors"
+                          >
+                            Edit
+                          </button>
+                          <button
+                            onClick={() => {
+                              setAdminToDelete(admin);
+                              setIsDeleteModalOpen(true);
+                            }}
+                            className="text-xs font-bold text-rose-600 hover:text-rose-800 bg-rose-50 hover:bg-rose-100 p-1.5 rounded-lg transition-colors"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      )}
+                    </td>
+                  )}
                 </motion.tr>
               ))}
             </tbody>
